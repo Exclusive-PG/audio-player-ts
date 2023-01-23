@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8" />
+		<title>Exclusive-AudioPlayer</title>
+		<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300&display=swap" rel="stylesheet" />
+
+		<script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js" defer></script>
+		<script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js" defer></script>
+	</head>
+	<body>
+		<main class="app_vvisualizer">
+		<section class="content_win">
+		<section class="section_canvas"> <canvas id="canvas"></canvas></section> 
+		<section class="background">
+			
+			<!-- <video  class ="full_inner_screen" src="./video/videoplayback.webm" muted loop ></video> -->
+		
+		</section>
+		<section class="main_window">
+		
+		<div class="wrapper_inner_controllers">
+			<div class="title_zone">
+				<div class="name_title"></div>
+				<div class="artist_title"></div>
+			</div>
+			<div class="controllers">
+			<button class="btn-controller prev off left"><i class="fas fa-angle-double-left fa-2x"></i></button>
+			<button class="btn-controller playOrPause"><i class="fas fa-power-off fa-2x"></i></button>
+			<button class="btn-controller next off right"><i class="fas fa-angle-double-right fa-2x"></i></button>
+			<!-- <img src="" alt="track_img" id="track_img">
+		   -->
+		  <!-- Boxicons CDN Link -->
+			<link href='https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css' rel='stylesheet'>
+		</div>
+		
+		</div>
+			<div class="sidebar ">
+				<div class="logo-details">
+				  <i class='bx bxl-javascript icon'></i>
+					<div class="logo_name">Exclusive_</div>
+					<i class='bx bx-menu' id="btn" ></i>
+				</div>
+				<ul class="nav-list">
+				  <li>
+					  <i class='bx bx-search' ></i>
+					 <input type="text" placeholder="Search...">
+					 <span class="tooltip">Search</span>
+				  </li>
+				  <li>
+					<a href="#">
+					  <i class='bx bx-grid-alt'></i>
+					  <span class="links_name">Dashboard</span>
+					</a>
+					 <span class="tooltip">Dashboard</span>
+				  </li>
+				  <li>
+				   <a href="#">
+					 <i class='bx bx-user' ></i>
+					 <span class="links_name">User</span>
+				   </a>
+				   <span class="tooltip">User</span>
+				 </li>
+		
+				 <li>
+				   <a href="#">
+					 <i class='bx bx-pie-chart-alt-2' ></i>
+					 <span class="links_name">Analytics</span>
+				   </a>
+				   <span class="tooltip">Analytics</span>
+				 </li>
+				 <li data-screen = "file_manager">
+				   <a href="#">
+					 <i class='bx bx-folder' ></i>
+					 <span class="links_name">File Manager</span>
+				   </a>
+				   <span class="tooltip">Files</span>
+				 </li>
+		
+				 <li>
+				   <a href="#">
+					 <i class='bx bx-heart' ></i>
+					 <span class="links_name">Saved</span>
+				   </a>
+				   <span class="tooltip">Saved</span>
+				 </li>
+				 <li>
+				   <a href="#">
+					 <i class='bx bx-cog' ></i>
+					 <span class="links_name">Setting</span>
+				   </a>
+				   <span class="tooltip">Setting</span>
+				 </li>
+				 <li class="profile">
+					 <div class="profile-details">
+					   <img src="./images/logo.png" alt="profileImg">
+					   <div class="name_job">
+						 <div class="name">Dmitry Ilchenko</div>
+						 <div class="job">FrontEnd</div>
+					   </div>
+					 </div>
+					 <i class='bx bx-log-out' id="log_out" ></i>
+				 </li>
+				</ul>
+			  </div>
+		
+		</section>
+		</section>
+		
+		<section class="screens_sidebar">
+		  <div class="screen file_manager_screen " data-screen-target = "file_manager">
+			<div class="fm_inner">
+			  <h1>File Manager</h1>
+					 <div class="drag-n-drop"><i class="far fa-images fa-2x"></i></div>
+					 <input type="file" class="file_load">
+			</div>
+		  </div>
+		</section>
+		
+		</main>
+	</body>
+</html>
