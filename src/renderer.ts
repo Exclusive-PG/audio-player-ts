@@ -5,26 +5,11 @@ import Controllers from "./scripts/Classes/Controllers";
 import AudioPlayerController from "./scripts/Classes/AudioControllers/AudioPlayerController";
 import AudioContextController from "./scripts/Classes/AudioControllers/AudioContextController";
 
-let canvas: any, ctx: any, btn: any, audio: any;
+let canvas: any, ctx: any, audio: any;
 
-//const controllers = new Controllers();
 const audioPlayerController = new AudioPlayerController();
 const audioContextController = new AudioContextController();
-
-// const createAudioContext = () => {
-// 	if (!audioContext) {
-// 		audioContext = new AudioContext();
-// 		analyzer = audioContext.createAnalyser();
-// 		analyzer.fftSize = 8192;
-// 		//4096
-// 		//8192
-// 		let source = audioContext.createMediaElementSource(audio);
-// 		source.connect(analyzer);
-// 		analyzer.connect(audioContext.destination);
-// 	} else {
-// 		//console.log("audio context already create")
-// 	}
-// };
+const controllers = new Controllers();
 
 let itemSongs1 = {
 	src: "C:/Users/dayme/Downloads/bohemian_rhapsody_12. Queen - Another One Bites The Dust.mp3",
@@ -38,25 +23,16 @@ let itemSongs2 = {
 	artist: "",
 };
 
+let itemSongs3 = {
+   src:"C:/Users/dayme/Downloads/Неизвестен_Атака_Титанов_5_Опенинг_holidaymp3_ru.mp3"
+}
+
 let songs: any = [];
 
-
-songs.push(itemSongs1, itemSongs2);
+songs.push(itemSongs1, itemSongs2,itemSongs3);
 
 console.log(songs);
 
-let btnControllers = document.querySelectorAll(".btn-controller");
-
-////initialize Draw Mode
-
-btnControllers.forEach((element) => {
-	element.addEventListener("click", () => {
-		audioPlayerController.init(drawModeWaves, audio);
-      audioContextController.init(audio);
-      audioContextController.connectPath();
-		audioPlayerController.TrackingEnd(songs);
-	});
-});
 
 
 window.addEventListener("resize", () => {
@@ -70,39 +46,41 @@ window.addEventListener("load", () => {
 	canvas.height = window.innerHeight;
 	ctx = canvas.getContext("2d");
 	audio = new Audio();
+	audioPlayerController.init(drawModeWaves, audio, songs);
+	audioContextController.init(audio);
+	audioContextController.connectPath();
+	audioPlayerController.TrackingEnd();
 
-	//controllers.playOrPause(document.querySelector(".playOrPause"), songs, "Enter");
-
-	//controllers.nextTrack(document.querySelector(".next"), songs, "ArrowRight");
-
-	//controllers.prevTrack(document.querySelector(".prev"), songs, "ArrowLeft");
+	controllers.addController(document.querySelector(".playOrPause"), () => audioPlayerController.playOrPause(), "");
+	controllers.addController(document.querySelector(".next"), () => audioPlayerController.nextTrack(), "ArrowRight");
+	controllers.addController(document.querySelector(".prev"), () => audioPlayerController.prevTrack(), "ArrowLeft");
 });
 
 window.addEventListener("keyup", (e) => {
 	console.log(e.key);
 });
 
-document.querySelector(".playOrPause").addEventListener("click", () => {
-	audioPlayerController.playOrPause(songs);
-});
+// document.querySelector(".playOrPause").addEventListener("click", () => {
+// 	audioPlayerController.playOrPause();
+// });
 
-window.addEventListener("keyup", (e) => {
-	if (e.keyCode === 32) {
-		e.preventDefault();
+// window.addEventListener("keyup", (e) => {
+// 	if (e.keyCode === 32) {
+// 		e.preventDefault();
 
-		if (!audio.paused) {
-			//@ts-ignore
-			document.querySelector(".full_inner_screen").pause();
-		} else {
-			//@ts-ignore
-			document.querySelector(".full_inner_screen").play();
-		}
-	}
-});
+// 		if (!audio.paused) {
+// 			//@ts-ignore
+// 			document.querySelector(".full_inner_screen").pause();
+// 		} else {
+// 			//@ts-ignore
+// 			document.querySelector(".full_inner_screen").play();
+// 		}
+// 	}
+// });
 
 function drawModeWaves() {
 	//console.log(`width:${canvas.width}, height: ${canvas.height}`);
-   let analyzer = audioContextController.getAnalyzer;
+	let analyzer = audioContextController.getAnalyzer;
 	requestAnimationFrame(drawModeWaves);
 	let data: any = new Uint8Array(analyzer.frequencyBinCount);
 	analyzer.getByteFrequencyData(data);
