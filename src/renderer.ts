@@ -1,6 +1,5 @@
 import "@fortawesome/fontawesome-free/js/all";
 import "./assets/styles/index.scss";
-import "./scripts/Classes/sidebar";
 import Controllers from "./scripts/Classes/Controllers";
 import AudioPlayerController from "./scripts/Classes/AudioControllers/AudioPlayerController";
 import AudioContextController from "./scripts/Classes/AudioControllers/AudioContextController";
@@ -26,10 +25,12 @@ let itemSongs2 = {
 let itemSongs3 = {
    src:"C:/Users/dayme/Downloads/Неизвестен_Атака_Титанов_5_Опенинг_holidaymp3_ru.mp3"
 }
-
+let item4={
+	src:"https://mdn.github.io/webaudio-examples/stereo-panner-node/viper.mp3"
+}
 let songs: any = [];
 
-songs.push(itemSongs1, itemSongs2,itemSongs3);
+songs.push(itemSongs1, itemSongs2,itemSongs3,item4);
 
 console.log(songs);
 
@@ -37,7 +38,7 @@ console.log(songs);
 
 window.addEventListener("resize", () => {
 	canvas.width = window.innerWidth;
-	//canvas.height = window.innerHeight
+	canvas.height = window.innerHeight
 });
 
 window.addEventListener("load", () => {
@@ -48,7 +49,7 @@ window.addEventListener("load", () => {
 	audio = new Audio();
 	audioPlayerController.init(drawModeWaves, audio, songs);
 	audioContextController.init(audio);
-	audioContextController.connectPath();
+	audioContextController.connectNodes();
 	audioPlayerController.TrackingEnd();
 
 	controllers.addController(document.querySelector(".playOrPause"), () => audioPlayerController.playOrPause(), "");
@@ -59,24 +60,9 @@ window.addEventListener("load", () => {
 window.addEventListener("keyup", (e) => {
 	console.log(e.key);
 });
-
-// document.querySelector(".playOrPause").addEventListener("click", () => {
-// 	audioPlayerController.playOrPause();
-// });
-
-// window.addEventListener("keyup", (e) => {
-// 	if (e.keyCode === 32) {
-// 		e.preventDefault();
-
-// 		if (!audio.paused) {
-// 			//@ts-ignore
-// 			document.querySelector(".full_inner_screen").pause();
-// 		} else {
-// 			//@ts-ignore
-// 			document.querySelector(".full_inner_screen").play();
-// 		}
-// 	}
-// });
+document.querySelector(".panning-control").addEventListener("input",()=>{
+	audioContextController.setStereoNode = parseInt((document.querySelector(".panning-control") as HTMLInputElement).value)
+})
 
 function drawModeWaves() {
 	//console.log(`width:${canvas.width}, height: ${canvas.height}`);
@@ -86,7 +72,7 @@ function drawModeWaves() {
 	analyzer.getByteFrequencyData(data);
 	ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-	let step = 60;
+	let step = 40;
 	let sizeHeightWaves = 4;
 
 	ctx.beginPath();

@@ -1,18 +1,28 @@
+import { IplaybackRate } from "../../../types/types";
+
 export default class AudioPlayerController {
 	private _currentIndexTrack = 0;
+	private _currentPlaybackRateMode = 1;
 	private _modePlay: Function = null;
 	private _audio: HTMLAudioElement = null;
 	private listTracks: Array<HTMLAudioElement> = [];
 	private MAX_VALUE_VOLUME = 1;
 	private MIN_VALUE_VOLUME = 0;
+	private playbackRateModes: Array<IplaybackRate> = [];
 
 	public init(modePlay: Function, audio: HTMLAudioElement, listTracks: Array<HTMLAudioElement>) {
 		this._audio = audio;
+		this._audio.volume = 0.5
+		
 		this.listTracks = listTracks;
 		modePlay !== null && (this._modePlay = modePlay);
-		setInterval(() => {
-			console.log(this._currentIndexTrack);
-		}, 100);
+		this.playbackRateModes = [
+			{key:"halfSpeed",value:0.5},
+			{key:"normalSpeed",value:1},
+			{key:"doubleSpeed",value:2},
+			{key:"tripleSpeed",value:3},
+		]
+		this.playbackRateAudio(this.playbackRateModes[this._currentPlaybackRateMode]);
 	}
 
 	public playOrPause() {
@@ -51,13 +61,16 @@ export default class AudioPlayerController {
 		console.log(`${this._currentIndexTrack}/${this.listTracks.length}`);
 	}
 
-	TrackingEnd() {
+	public TrackingEnd() {
 		this._audio.addEventListener("ended", () => {
 			console.log("The audio has ended.");
 			this.nextTrack();
 		});
 	}
-
+	public playbackRateAudio(obj:IplaybackRate) {
+		console.log("Current playbackRate:",obj)
+		this._audio.defaultPlaybackRate = obj.value;
+	}
 	set setVolume(value: number) {
 		if (value > this.MAX_VALUE_VOLUME || value < this.MIN_VALUE_VOLUME) return;
 
@@ -72,5 +85,5 @@ export default class AudioPlayerController {
 	// 	this.settingsPlayer.setTitleArtist(document.querySelector(".artist_title"), listTracks[this._currentIndexTrack].artist);
 	// }
 }
-				//btn.innerHTML = '<i class="fas fa-play fa-2x"></i>';
-				//btn.innerHTML = '<i class="fas fa-pause fa-2x"></i>';
+//btn.innerHTML = '<i class="fas fa-play fa-2x"></i>';
+//btn.innerHTML = '<i class="fas fa-pause fa-2x"></i>';
