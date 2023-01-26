@@ -1,0 +1,39 @@
+
+.main_controllers{
+    z-index: 5;
+    position: absolute;
+    background-color: $mainControllerAudioBackColor;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 10%;
+}
+
+.wrapper_inner_controllers{
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    .btn-controller{
+        transition: .1s all;
+        margin: 0 15px;
+        color: $mainControllersColor;
+        padding: 10px 15px;
+        border-radius: 50%;
+        &:hover{
+            cursor: pointer;
+            background-color: #fff;
+            color:#FE4A49 ;
+        }
+        // svg{
+        //     display: flex;
+        //     justify-content: center;
+        //     align-items: center;
+        // }
+    }
+    .play_pause{
+        padding: 10px 14px 10px 17px;
+    }
+}
+

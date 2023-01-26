@@ -28,15 +28,19 @@ let itemSongs3 = {
 let item4={
 	src:"https://mdn.github.io/webaudio-examples/stereo-panner-node/viper.mp3"
 }
+let item5 = {
+	src:"C:/Users/dayme/Downloads/papa_roach-skeletons.mp3"
+}
 let songs: any = [];
 
-songs.push(itemSongs1, itemSongs2,itemSongs3,item4);
+songs.push(itemSongs1, itemSongs2,itemSongs3,item4,item5);
 
 console.log(songs);
 
 
 
 window.addEventListener("resize", () => {
+
 	canvas.width = window.innerWidth;
 	canvas.height = window.innerHeight
 });
@@ -51,18 +55,23 @@ window.addEventListener("load", () => {
 	audioContextController.init(audio);
 	audioContextController.connectNodes();
 	audioPlayerController.TrackingEnd();
-
-	controllers.addController(document.querySelector(".playOrPause"), () => audioPlayerController.playOrPause(), "");
-	controllers.addController(document.querySelector(".next"), () => audioPlayerController.nextTrack(), "ArrowRight");
-	controllers.addController(document.querySelector(".prev"), () => audioPlayerController.prevTrack(), "ArrowLeft");
+	controllers.addController(document.querySelector(".shuffle_mode"),()=>{
+		audioPlayerController.setShuffleMode = !audioPlayerController.getModsStates.isShuffle
+	},null)
+	controllers.addController(document.querySelector(".repeat_mode"),()=>{
+		audioPlayerController.setRepeatOne = !audioPlayerController.getModsStates.isRepeatOne
+	},null)
+	controllers.addController(document.querySelector(".play_pause"), () => audioPlayerController.playOrPause(), "");
+	controllers.addController(document.querySelector(".next_right"), () => audioPlayerController.nextTrack(), "ArrowRight");
+	controllers.addController(document.querySelector(".prev_left"), () => audioPlayerController.prevTrack(), "ArrowLeft");
 });
 
 window.addEventListener("keyup", (e) => {
 	console.log(e.key);
 });
-document.querySelector(".panning-control").addEventListener("input",()=>{
-	audioContextController.setStereoNode = parseInt((document.querySelector(".panning-control") as HTMLInputElement).value)
-})
+// document.querySelector(".panning-control").addEventListener("input",()=>{
+// 	audioContextController.setStereoNode = parseInt((document.querySelector(".panning-control") as HTMLInputElement).value)
+// })
 
 function drawModeWaves() {
 	//console.log(`width:${canvas.width}, height: ${canvas.height}`);
@@ -72,7 +81,7 @@ function drawModeWaves() {
 	analyzer.getByteFrequencyData(data);
 	ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-	let step = 40;
+	let step = 60;
 	let sizeHeightWaves = 4;
 
 	ctx.beginPath();
