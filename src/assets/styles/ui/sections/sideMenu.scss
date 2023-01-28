@@ -1,0 +1,199 @@
+.sidebar {
+	margin: 0;
+	padding: 0;
+	font-family: "Poppins", sans-serif;
+	position: fixed;
+	left: 0;
+	top: 0;
+	height: 90vh;
+	width: $widthSidebar;
+	background: #11101d;
+	padding: 6px 14px;
+	z-index: 99;
+	transition: all 0.5s ease;
+}
+
+.sidebar.active {
+	width: 250px;
+}
+
+.sidebar .logo-details {
+	display: flex;
+	align-items: center;
+	padding: 0 15px;
+	margin: 20px 0;
+
+	svg {
+		transition: 0.2s all;
+		&:hover {
+			cursor: pointer;
+			transform: translateY(-5px);
+			color: $mainRedColor;
+		}
+	}
+}
+
+.sidebar .logo-details .icon {
+	opacity: 0;
+	transition: all 0.5s ease;
+}
+
+.sidebar .logo-details .logo_name {
+	color: #fff;
+	font-size: 20px;
+	font-weight: 600;
+	opacity: 0;
+	transition: all 0.5s ease;
+}
+
+.sidebar.active .logo-details .icon,
+.sidebar.active .logo-details .logo_name {
+	opacity: 1;
+}
+
+.sidebar .logo-details #active_side_menu {
+	margin: 25px 0 30px 0;
+	transform: translateY(-50%);
+	font-size: 22px;
+	transition: all 0.4s ease;
+	font-size: 23px;
+	text-align: center;
+	cursor: pointer;
+	transition: all 0.5s ease;
+}
+
+.sidebar.active .logo-details #active_side_menu {
+	text-align: right;
+}
+
+.sidebar svg {
+	color: #fff;
+	text-shadow: 0 0 10px $mainRedColor, 0 0 20px $mainRedColor, 0 0 40px $mainRedColor, 0 0 60px $mainRedColor, 0 0 80px $mainRedColor;
+	font-size: 25px;
+	text-align: center;
+}
+
+.sidebar .nav-list {
+	margin-top: 20px;
+	height: 100%;
+}
+
+.sidebar li {
+	position: relative;
+	margin: 25px 0;
+	list-style: none;
+    transition: .2s all ease-out;
+}
+
+.sidebar li .tooltip {
+	position: absolute;
+	top: -20px;
+	left: calc(100% + 15px);
+	z-index: 3;
+	background: #11101d;
+	color: #fff;
+	text-shadow: 0 0 10px $mainControllerAudioBackColor, 0 0 20px $mainControllerAudioBackColor, 0 0 40px $mainControllerAudioBackColor, 0 0 60px $mainControllerAudioBackColor,
+		0 0 80px $mainControllerAudioBackColor;
+	box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3);
+	padding: 6px 12px;
+	border-radius: 4px;
+	font-size: 15px;
+	font-weight: 400;
+	opacity: 0;
+	white-space: nowrap;
+	pointer-events: none;
+}
+
+.sidebar li:hover .tooltip {
+	opacity: 1;
+	pointer-events: auto;
+	transition: all 0.4s ease;
+	top: 50%;
+	transform: translateY(-50%);
+}
+
+.sidebar.active li .tooltip {
+	display: none;
+}
+
+.sidebar input {
+	font-size: 15px;
+	color: #fff;
+	font-weight: 400;
+	outline: none;
+	height: 50px;
+	width: 100%;
+	width: 50px;
+	border: none;
+	border-radius: 12px;
+	transition: all 0.5s ease;
+	background: #1d1b31;
+}
+
+.sidebar.active input {
+	padding: 0 20px 0 50px;
+	width: 100%;
+}
+
+.sidebar .bx-search {
+	position: absolute;
+	top: 50%;
+	left: 0;
+	transform: translateY(-50%);
+	font-size: 22px;
+	background: #1d1b31;
+	color: #fff;
+}
+
+.sidebar li a {
+	display: flex;
+	height: 100%;
+	width: 100%;
+	border-radius: 12px;
+	align-items: center;
+	text-decoration: none;
+	padding: 10px 13px;
+	background: #11101d;
+	color: #fff;
+    text-align: center;
+}
+
+
+.sidebar li a:hover {
+	background: $mainControllerAudioBackColor;
+
+}
+
+.sidebar li a .links_name {
+	color: #fff;
+	font-size: 15px;
+	font-weight: 400;
+	white-space: nowrap;
+	opacity: 0;
+	pointer-events: none;
+	transition: 0.4s;
+	padding: 0 15px;
+  
+}
+
+.sidebar.active li a .links_name {
+	opacity: 1;
+	pointer-events: auto;
+}
+
+.sidebar.active li a:hover svg {
+	color: $mainRedColor;
+}
+.sidebar.active li:hover {
+	transform: translateY(-5px);
+}
+.add_playlist_btn{
+    padding:10px 10px 10px 15px !important;
+}
+
+@media (max-width: 420px) {
+	.sidebar li .tooltip {
+		display: none;
+	}
+}
+

@@ -11,9 +11,9 @@ export default class AudioContextController {
 			this.analyzer = this.audioContext.createAnalyser();
 			this.analyzer.fftSize = 8192;
 			this.source = this.audioContext.createMediaElementSource(audio);
-			//this.gainNode = this.audioContext.createGain();
+			this.gainNode = this.audioContext.createGain();
 			this.stereoNode = new StereoPannerNode(this.audioContext)
-			//this.setGainNode = 1
+			this.setGainNode = 10
 			this.setStereoNode = 0
 			
 			console.log("AudioContextController created");
@@ -25,7 +25,8 @@ export default class AudioContextController {
 		this.source.connect(this.analyzer);
 		this.analyzer.connect(this.audioContext.destination);
 		//this.GainNodeConnect();
-		this.StereoNodeConnect();
+		//this.GainNodeDisconnect();
+		//this.StereoNodeConnect();
 		
 		
 		//this.GainNodeDisconnect();
@@ -33,8 +34,7 @@ export default class AudioContextController {
 	}
 	//GAIN SECTION
 	public GainNodeConnect(){
-	
-		this.gainNode.connect(this.audioContext.destination);
+		this.source.connect(this.gainNode).connect(this.audioContext.destination);
 	}
 	public GainNodeDisconnect(){
 		this.gainNode.disconnect();

@@ -124,4 +124,7 @@ export default class AudioPlayerController {
 		this._audio.play();
 		this._modePlay();
 	}
+	get activeSong(){
+		return this.currentListTracks[this._currentIndexTrack].src;
+	}
 }

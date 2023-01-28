@@ -57,17 +57,17 @@ app.on('activate', () => {
 });
 
 
-// ipcMain.on("upload_file", (event) => {
-//   dialog.showOpenDialog({properties: ['openFile'],filters: [
-//     { name: 'Images', extensions: ['jpg', 'png', 'gif'] },] }).then(function (response) {
-//     if (!response.canceled) {
-//       event.sender.send("upload_file", { filePath: response.filePaths[0] });
-//     } else {
-//       console.log("no file selected");
-//     }
-//   })
+ipcMain.on("upload_files", (event) => {
+  dialog.showOpenDialog({properties: ['openFile',"multiSelections"],filters: [
+    { name: 'Audio FIles', extensions: ['mp3'] },] }).then(function (response) {
+    if (!response.canceled) {
+      event.sender.send("upload_files", { filePath: response });
+    } else {
+      console.log("no file selected");
+    }
+  })
 	
-// });
+});
 
 // ipcMain.on("upload_img_food", (event) => {
 //   dialog.showOpenDialog({properties: ['openFile'],filters: [
