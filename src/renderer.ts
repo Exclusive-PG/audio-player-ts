@@ -4,14 +4,16 @@ import Controllers from "./scripts/Classes/Controllers";
 import AudioPlayerController from "./scripts/Classes/AudioControllers/AudioPlayerController";
 import AudioContextController from "./scripts/Classes/AudioControllers/AudioContextController";
 import "./scripts/UIcontroller/sidebarController";
-import { fs } from "./scripts/requiredLib/requiredLib";
-import { ipcRenderer } from "electron";
-let canvas: any, ctx: any, audio: any;
+import "./scripts/UIcontroller/MainControllerAudio"
+import "./scripts/Events/events-electron"
+import { loadAudioTags } from "./scripts/Controllers/loadTags";
+
+export let canvas: HTMLCanvasElement, ctx:CanvasRenderingContext2D , audio:  HTMLAudioElement;
 
 const audioPlayerController = new AudioPlayerController();
 const audioContextController = new AudioContextController();
 const controllers = new Controllers();
-
+audio = new Audio();
 let itemSongs1 = {
 	src: "C:/Users/dayme/Downloads/bohemian_rhapsody_12. Queen - Another One Bites The Dust.mp3",
 	name: "Another One Bites The Dust",
@@ -36,9 +38,12 @@ let item5 = {
 let item6 = {
 	src: "D:/Music/C.C.Catch - Best Of The Best (Remix Version) (2011)/01. Are You Man Enough (Long Version Muscle Mix).mp3"
 }
+let item7 ={
+	src:"C:/Users/dayme/Downloads/Omen.wav - Ungewiss_(audiohunter.ru).mp3"
+}
 let songs: any = [];
 
-songs.push(itemSongs1, itemSongs2, itemSongs3, item4, item5,item6);
+songs.push(itemSongs1, itemSongs2, itemSongs3, item4, item5,item6,item7);
 
 console.log(songs);
 
@@ -48,11 +53,11 @@ window.addEventListener("resize", () => {
 });
 
 window.addEventListener("load", () => {
-	canvas = document.getElementById("canvas");
+	canvas = document.querySelector("#canvas");
 	canvas.width = window.innerWidth;
 	canvas.height = window.innerHeight;
 	ctx = canvas.getContext("2d");
-	audio = new Audio();
+
 	audioPlayerController.init(drawModeWaves, audio, songs);
 	audioContextController.init(audio);
 	audioContextController.connectNodes();
@@ -72,7 +77,7 @@ window.addEventListener("load", () => {
 		null,
 	);
 	controllers.addController(document.querySelector(".play_pause"), () => audioPlayerController.playOrPause(), "");
-	controllers.addController(document.querySelector(".next_right"), () => {audioPlayerController.nextTrack();ss(audioPlayerController.activeSong)}, "ArrowRight");
+	controllers.addController(document.querySelector(".next_right"), () => {audioPlayerController.nextTrack();loadAudioTags(audioPlayerController.activeSong)}, "ArrowRight");
 	controllers.addController(document.querySelector(".prev_left"), () => audioPlayerController.prevTrack(), "ArrowLeft");
 });
 
@@ -116,31 +121,14 @@ function drawModeWaves() {
 
 	ctx.fillStyle = "rgba(255,255,255,1)";
 	ctx.closePath(); //draw to first point
-	ctx.shadowColor = "rgba(178, 0, 0,0.9)";
+	//ctx.shadowColor = "rgba(178, 0, 0,0.9)";
+	ctx.shadowColor = "rgba(254,74,73,0.9)"
+	//ctx.shadowColor = "rgba(0,159,183,0.8)"
 	ctx.shadowBlur = 20;
 
 	ctx.fill();
 }
 
 
-document.querySelector(".add_playlist_btn").addEventListener("click",()=>{
-	ipcRenderer.send("upload_files")
-})
-ipcRenderer.on("upload_files", (event, arg) => {
-	console.log(arg);
-});
-const { parseFile } = require("music-metadata");
 
-const ss = async (song:string) => {
-	console.log(song);
-	const metadata = await parseFile(song);
-	console.log(metadata.native);
-	let dataIMG = metadata.native["ID3v2.3"].filter((item:any)=>item.id === "APIC")[0].value;
-	console.log(dataIMG)
-	let base64String = "";
-	for (let i = 0; i < dataIMG.data.length; i++) {
-		base64String += String.fromCharCode(dataIMG.data[i]);
-	}
-	document.querySelector<HTMLImageElement>("#poster").src = `data:${dataIMG.format};base64,${window.btoa(base64String)}`;
-};
 

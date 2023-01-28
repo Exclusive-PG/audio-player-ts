@@ -4,5 +4,5 @@ export const fs = require("fs");
 export const path = require("path");
 export const { shell } = require("electron");
 export const axios = require("axios")
-
+export const { parseFile } = require("music-metadata");
 
