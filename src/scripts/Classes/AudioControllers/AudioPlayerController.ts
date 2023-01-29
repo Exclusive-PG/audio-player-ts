@@ -105,6 +105,10 @@ export default class AudioPlayerController {
 			this._currentIndexTrack = this._currentIndexTrack < 0 ? (this._currentIndexTrack = this.currentListTracks.length - 1) : this._currentIndexTrack;
 		}
 	}
+	public stopTrack() {
+		this._audio.currentTime = 0;
+		if (this._audio.played) this._audio.pause();
+	}
 	set setShuffleMode(isShuffle: boolean) {
 		this.mods.isShuffle = isShuffle;
 		this.mods.isShuffle && this.shuffleMode();
@@ -119,12 +123,32 @@ export default class AudioPlayerController {
 	get getModsStates() {
 		return this.mods;
 	}
+	get volume() {
+		return this._audio.volume;
+	}
+	public getVolume() {
+		console.log(this._audio.volume);
+		return this;
+	}
+	public addVolume(value: number) {
+		if (this._audio.volume + value >= this.MAX_VALUE_VOLUME) {
+			this._audio.volume = this.MAX_VALUE_VOLUME;
+			return;
+		}
+		if (this._audio.volume + value <= this.MIN_VALUE_VOLUME) {
+			this._audio.volume = this.MIN_VALUE_VOLUME;
+			return;
+		}
+		this._audio.volume += value;
+		console.log(this._audio.volume);
+		return this;
+	}
 
 	private PlayAll() {
 		this._audio.play();
 		this._modePlay();
 	}
-	get activeSong(){
+	get activeSong() {
 		return this.currentListTracks[this._currentIndexTrack].src;
 	}
 }

@@ -1,24 +1,25 @@
 import "@fortawesome/fontawesome-free/js/all";
 import "./assets/styles/index.scss";
-import Controllers from "./scripts/Classes/Controllers";
+
 import AudioPlayerController from "./scripts/Classes/AudioControllers/AudioPlayerController";
 import AudioContextController from "./scripts/Classes/AudioControllers/AudioContextController";
 import "./scripts/UIcontroller/sidebarController";
 import "./scripts/UIcontroller/MainControllerAudio"
 import "./scripts/Events/events-electron"
-import { loadAudioTags } from "./scripts/Controllers/loadTags";
+import { ControllerAudio } from "./scripts/UIcontroller/MainControllerAudio";
+import { keysControllersInit } from "./scripts/UIcontroller/keyController";
 
 export let canvas: HTMLCanvasElement, ctx:CanvasRenderingContext2D , audio:  HTMLAudioElement;
 
-const audioPlayerController = new AudioPlayerController();
+export const audioPlayerController = new AudioPlayerController();
 const audioContextController = new AudioContextController();
-const controllers = new Controllers();
+
 audio = new Audio();
-let itemSongs1 = {
-	src: "C:/Users/dayme/Downloads/bohemian_rhapsody_12. Queen - Another One Bites The Dust.mp3",
-	name: "Another One Bites The Dust",
-	artist: "",
-};
+// let itemSongs1 = {
+// 	src: "C:/Users/dayme/Downloads/bohemian_rhapsody_12. Queen - Another One Bites The Dust.mp3",
+// 	name: "Another One Bites The Dust",
+// 	artist: "",
+// };
 
 let itemSongs2 = {
 	src: "C:Users/dayme/Downloads/Meduza_Becky_Hill_GOODBOYS_-_Lose_Control_66925984.mp3",
@@ -43,7 +44,7 @@ let item7 ={
 }
 let songs: any = [];
 
-songs.push(itemSongs1, itemSongs2, itemSongs3, item4, item5,item6,item7);
+songs.push( itemSongs2, itemSongs3, item4, item5,item6,item7);
 
 console.log(songs);
 
@@ -62,23 +63,9 @@ window.addEventListener("load", () => {
 	audioContextController.init(audio);
 	audioContextController.connectNodes();
 	audioPlayerController.TrackingEnd();
-	controllers.addController(
-		document.querySelector(".shuffle_mode"),
-		() => {
-			audioPlayerController.setShuffleMode = !audioPlayerController.getModsStates.isShuffle;
-		},
-		null,
-	);
-	controllers.addController(
-		document.querySelector(".repeat_mode"),
-		() => {
-			audioPlayerController.setRepeatOne = !audioPlayerController.getModsStates.isRepeatOne;
-		},
-		null,
-	);
-	controllers.addController(document.querySelector(".play_pause"), () => audioPlayerController.playOrPause(), "");
-	controllers.addController(document.querySelector(".next_right"), () => {audioPlayerController.nextTrack();loadAudioTags(audioPlayerController.activeSong)}, "ArrowRight");
-	controllers.addController(document.querySelector(".prev_left"), () => audioPlayerController.prevTrack(), "ArrowLeft");
+	ControllerAudio(audio);
+	keysControllersInit(audioPlayerController);
+	
 });
 
 window.addEventListener("keyup", (e) => {

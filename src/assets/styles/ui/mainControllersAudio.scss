@@ -39,9 +39,9 @@
 	align-items: center;
 	position: absolute;
 	top: -2px;
-    left: -8px;
+	left: -8px;
 	width: 100vw;
-    transition: .2s all;
+	transition: 0.2s all;
 	&:hover .timeline {
 		height: 100%;
 	}
@@ -56,8 +56,8 @@
 	height: 4px;
 	width: 100%;
 	position: relative;
-    transition: .2s all;
-    left: -7px;
+	transition: 0.2s all;
+	left: -7px;
 	&::after {
 		content: "";
 		position: absolute;
@@ -85,4 +85,65 @@
 
 .timeline-container:hover .thumb-indicator {
 	--scale: 2;
+}
+
+.volume-container {
+	border-radius: 20px;
+	height: 5px;
+	z-index: 2;
+	margin-inline: 0.5rem;
+	cursor: pointer;
+	display: flex;
+	align-items: center;
+	width: 10%;
+	transition: 0.2s all;
+	&:hover .volume {
+		height: 100%;
+	}
+
+	&:hover .volume::after {
+		display: block;
+	}
+}
+
+.volume {
+	background-color: rgba(100, 100, 100, 0.5);
+	border-radius: 20px;
+	height: 3px;
+	width: 100%;
+	position: relative;
+	transition: 0.2s all;
+	left: -7px;
+	&::after {
+		content: "";
+		position: absolute;
+		left: -7px;
+		top: -1px;
+		bottom: 0;
+		right: calc(100% - var(--progress-position) * 100%);
+		background-color: $mainRedColor;
+		display: block;
+	}
+}
+
+.volume .thumb-indicator-volume {
+	--scale: 0;
+	position: absolute;
+	height: 10px;
+	top: -25%;
+	transform: translateX(-50%) scale(var(--scale));
+	left: calc(var(--progress-position) * 100%);
+	background-color: $mainRedColor;
+	border-radius: 50%;
+	transition: transform 0.15s ease-in-out;
+	aspect-ratio: 1/1;
+}
+
+.volume-container:hover .thumb-indicator-volume {
+	--scale: 2;
+}
+.volume_indicator{
+	padding-right: 20px;
+	color: #fff;
+	width: 50px;
 }
