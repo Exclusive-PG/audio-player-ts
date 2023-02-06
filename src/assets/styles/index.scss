@@ -1,16 +1,18 @@
 @import "./variables.scss";
+@import "./ui/buttons.scss";
 @import "./ui/mainControllersAudio.scss";
 @import "./ui/sections/sideMenu.scss";
+@import "./ui/sections/addPlaylist.scss";
 @import "./canvas.scss";
 
 * {
 	box-sizing: border-box;
 	padding: 0;
 	margin: 0;
+	font-family: "Poppins", sans-serif;
 }
 
 body {
-   
 	font-family: "Poppins", sans-serif;
 	//overflow:hidden;
 }
@@ -26,12 +28,11 @@ body::-webkit-scrollbar {
 	overflow: hidden;
 }
 
-
 .content_section {
 	background-color: #fff;
 }
 
-#poster{
+#poster {
 	width: 100%;
 	height: 100vh;
 	object-fit: cover;

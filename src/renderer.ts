@@ -1,14 +1,14 @@
 import "@fortawesome/fontawesome-free/js/all";
 import "./assets/styles/index.scss";
-
 import AudioPlayerController from "./scripts/Classes/AudioControllers/AudioPlayerController";
 import AudioContextController from "./scripts/Classes/AudioControllers/AudioContextController";
 import "./scripts/UIcontroller/sidebarController";
 import "./scripts/UIcontroller/MainControllerAudio"
+import "./scripts/UIcontroller/AddPlaylistController"
 import "./scripts/Events/events-electron"
 import { ControllerAudio } from "./scripts/UIcontroller/MainControllerAudio";
 import { keysControllersInit } from "./scripts/UIcontroller/keyController";
-
+import "./scripts/Classes/Playlist/PlaylistManager"
 export let canvas: HTMLCanvasElement, ctx:CanvasRenderingContext2D , audio:  HTMLAudioElement;
 
 export const audioPlayerController = new AudioPlayerController();
@@ -23,8 +23,6 @@ audio = new Audio();
 
 let itemSongs2 = {
 	src: "C:Users/dayme/Downloads/Meduza_Becky_Hill_GOODBOYS_-_Lose_Control_66925984.mp3",
-	name: "Lose Control",
-	artist: "",
 };
 
 let itemSongs3 = {

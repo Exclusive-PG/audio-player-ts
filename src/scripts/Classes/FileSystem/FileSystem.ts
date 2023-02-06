@@ -2,7 +2,7 @@ import { fs, path } from "../../../scripts/requiredLib/requiredLib";
 
 export default class FileSystem {
 	private static paths = {
-		images: path.resolve(path.join("data", "playlists", "playlists.json")),
+		playlist: path.resolve(path.join("data", "playlists", "playlists.json")),
 		logs: path.resolve(path.join("data", "logs")),
 	};
 	public static createJSONData(data: any, pathFile: string) {

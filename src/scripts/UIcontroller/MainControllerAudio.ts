@@ -9,7 +9,6 @@ const leadingZeroFormatter = new Intl.NumberFormat(undefined, {
 export const ControllerAudio = (audio: HTMLAudioElement) => {
 	const timeLineContainer = document.querySelector<HTMLDivElement>(".timeline-container");
 	const volumeLineContainer = document.querySelector<HTMLDivElement>(".volume-container");
-	const volumeIndicator = document.querySelector<HTMLDivElement>(".volume_indicator");
 	let isScrubbingTimeLine = false;
 	let isScrubbingVolumeLine = false;
 	updateVolumeLine(audioPlayerController.volume,volumeLineContainer);	
@@ -44,7 +43,7 @@ export const ControllerAudio = (audio: HTMLAudioElement) => {
 		if (isScrubbingVolumeLine) {
 			e.preventDefault();
 			volumeLineContainer.style.setProperty("--progress-position", percent.toString());
-			showUIIconVolume(percent, volumeIndicator);
+
 			audioPlayerController.setVolume = percent;
 		}
 	}
@@ -97,5 +96,7 @@ function showUIIconVolume(percent: number, element: HTMLElement) {
 }
 
 export function updateVolumeLine(percent:number,htmlElement:HTMLElement){
+	const volumeIndicator = document.querySelector<HTMLDivElement>(".volume_indicator");
 	htmlElement.style.setProperty("--progress-position", audioPlayerController.volume.toString());
+	showUIIconVolume(percent, volumeIndicator);
 }
