@@ -9,11 +9,12 @@ import "./scripts/Events/events-electron"
 import { ControllerAudio } from "./scripts/UIcontroller/MainControllerAudio";
 import { keysControllersInit } from "./scripts/UIcontroller/keyController";
 import "./scripts/Classes/Playlist/PlaylistManager"
+import PlaylistManager from "./scripts/Classes/Playlist/PlaylistManager";
 export let canvas: HTMLCanvasElement, ctx:CanvasRenderingContext2D , audio:  HTMLAudioElement;
 
 export const audioPlayerController = new AudioPlayerController();
 const audioContextController = new AudioContextController();
-
+export const playlistManager = new PlaylistManager();
 audio = new Audio();
 // let itemSongs1 = {
 // 	src: "C:/Users/dayme/Downloads/bohemian_rhapsody_12. Queen - Another One Bites The Dust.mp3",

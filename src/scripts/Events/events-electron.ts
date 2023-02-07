@@ -10,4 +10,4 @@ function initEventsElectron() {
 	});
 }
 
-initEventsElectron();
+//initEventsElectron();
