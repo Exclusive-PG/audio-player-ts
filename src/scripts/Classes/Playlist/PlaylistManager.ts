@@ -17,7 +17,12 @@ export default class PlaylistManager {
 		this.data.push(playlist);
 		return this;
 	}
-
+	public getAllCountTracks(){
+		let totalTracks = this.data.reduce((acc,item)=>{
+			return acc + item.getData.tracks.length
+		},0)
+		return totalTracks;
+	}
 	public saveData() {
 		FileSystem.createJSONData(this.data, FileSystem.PATHS.playlist);
 		return this;

@@ -1,6 +1,4 @@
-
-import { audio, audioPlayerController } from "./../../renderer";
-
+import { audio, audioPlayerController } from "../../renderer";
 
 const leadingZeroFormatter = new Intl.NumberFormat(undefined, {
 	minimumIntegerDigits: 2,
@@ -11,7 +9,7 @@ export const ControllerAudio = (audio: HTMLAudioElement) => {
 	const volumeLineContainer = document.querySelector<HTMLDivElement>(".volume-container");
 	let isScrubbingTimeLine = false;
 	let isScrubbingVolumeLine = false;
-	updateVolumeLine(audioPlayerController.volume,volumeLineContainer);	
+	updateVolumeLine(audioPlayerController.volume, volumeLineContainer);
 
 	function toggleScrubbing(e: MouseEvent) {
 		const rect = timeLineContainer.getBoundingClientRect();
@@ -84,7 +82,6 @@ function durationVideo(time: number) {
 	}
 }
 
-
 function showUIIconVolume(percent: number, element: HTMLElement) {
 	if (percent <= 1 && percent >= 0.5) {
 		element.innerHTML = `<i class="fa-solid fa-volume-high"></i>`;
@@ -95,7 +92,7 @@ function showUIIconVolume(percent: number, element: HTMLElement) {
 	}
 }
 
-export function updateVolumeLine(percent:number,htmlElement:HTMLElement){
+export function updateVolumeLine(percent: number, htmlElement: HTMLElement) {
 	const volumeIndicator = document.querySelector<HTMLDivElement>(".volume_indicator");
 	htmlElement.style.setProperty("--progress-position", audioPlayerController.volume.toString());
 	showUIIconVolume(percent, volumeIndicator);

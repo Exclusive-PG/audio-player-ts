@@ -7,6 +7,7 @@
 		<link href="https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css" rel="stylesheet" />
 		<script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js" defer></script>
 		<script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js" defer></script>
+		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper/swiper-bundle.min.css" />
 	</head>
 	<body>
 		<main class="app">
@@ -49,7 +50,7 @@
 						</li>
 
 						<li data-screen="file_manager">
-							<a href="#">
+							<a href="#" class="show_file_manager">
 								<i class="fa-solid fa-folder"></i>
 								<span class="links_name">File Manager</span>
 							</a>
@@ -81,11 +82,11 @@
 				</div>
 				<img src="" alt="" id="poster" />
 			</section>
-			<section class="add_playlist active">
+			<section class="add_playlist">
 				<div class="close_win_add_playlist"><i class="fa-solid fa-xmark fa-2x" style="color: #fff"></i></div>
 				<div class="wrapper_form_add_playlist">
 					<div class="input-box">
-						<input type="text" required class="input_name_playlist"/>
+						<input type="text" required class="input_name_playlist" />
 						<span>Playlist Name</span>
 						<i></i>
 					</div>
@@ -94,6 +95,34 @@
 						<button class="btn fourth btn_attach_files"><i class="fa-solid fa-link"></i> Attach mp3 files</button>
 						<button class="btn fifth custom-fifth-btn btn_create_playlist">Create</button>
 					</div>
+				</div>
+			</section>
+			<section class="file_manager active">
+				<div class="close_win_file_manager"><i class="fa-solid fa-xmark fa-2x" style="color: #fff"></i></div>
+				<div>
+					<h1 class="hd_file_manager">Playlists</h1>
+					<div class="data_about_playlists"></div>
+				</div>
+				<!-- <div class="render_exists_playlists"></div> -->
+
+				<div class="swiper_playlist_or_content swiper">
+					<div class="swiper-wrapper wrapper_content_item">
+						<div class="render_exists_playlists swiper-slide"><center style="color: #fff; padding-top: 150px; font-size: 30px">Playlists not found</center></div>
+						<div class="current-playlist swiper-slide">
+							<div class="playing-playlist-name">
+								<div class="name-zone"></div>
+								<div class="current-page-zone"></div>
+							</div>
+							<div class="content_current_playlist_render"><center style="color: #fff; padding-top: 150px; font-size: 30px">Choose any playlist</center></div>
+
+							<div class="pagination_current_playlist">
+								<div class="prev-playlist-page"><i class="fa-solid fa-angle-left fa-2x"></i></div>
+								<div class="current_and_total_pages_playlist"></div>
+								<div class="next-playlist-page"><i class="fa-solid fa-angle-right fa-2x"></i></div>
+							</div>
+						</div>
+					</div>
+					<div class="swiper-pagination"></div>
 				</div>
 			</section>
 		</main>

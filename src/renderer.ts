@@ -2,26 +2,24 @@ import "@fortawesome/fontawesome-free/js/all";
 import "./assets/styles/index.scss";
 import AudioPlayerController from "./scripts/Classes/AudioControllers/AudioPlayerController";
 import AudioContextController from "./scripts/Classes/AudioControllers/AudioContextController";
-import "./scripts/UIcontroller/sidebarController";
-import "./scripts/UIcontroller/MainControllerAudio"
-import "./scripts/UIcontroller/AddPlaylistController"
-import "./scripts/Events/events-electron"
-import { ControllerAudio } from "./scripts/UIcontroller/MainControllerAudio";
-import { keysControllersInit } from "./scripts/UIcontroller/keyController";
-import "./scripts/Classes/Playlist/PlaylistManager"
+import "./scripts/UIcontrollers/sidebarController";
+import "./scripts/UIcontrollers/MainControllerAudio";
+import "./scripts/UIcontrollers/AddPlaylistController";
+import "./scripts/Events/events-electron";
+import { ControllerAudio } from "./scripts/UIcontrollers/MainControllerAudio";
+import { keysControllersInit } from "./scripts/UIcontrollers/keyController";
+import "./scripts/Classes/Playlist/PlaylistManager";
 import PlaylistManager from "./scripts/Classes/Playlist/PlaylistManager";
-export let canvas: HTMLCanvasElement, ctx:CanvasRenderingContext2D , audio:  HTMLAudioElement;
+import fileManagerController from "./scripts/UIcontrollers/fileManagerController";
 
+
+export let canvas: HTMLCanvasElement, ctx: CanvasRenderingContext2D, audio: HTMLAudioElement;
 export const audioPlayerController = new AudioPlayerController();
-const audioContextController = new AudioContextController();
 export const playlistManager = new PlaylistManager();
-audio = new Audio();
-// let itemSongs1 = {
-// 	src: "C:/Users/dayme/Downloads/bohemian_rhapsody_12. Queen - Another One Bites The Dust.mp3",
-// 	name: "Another One Bites The Dust",
-// 	artist: "",
-// };
 
+audio = new Audio();
+const audioContextController = new AudioContextController();
+fileManagerController(playlistManager);
 let itemSongs2 = {
 	src: "C:Users/dayme/Downloads/Meduza_Becky_Hill_GOODBOYS_-_Lose_Control_66925984.mp3",
 };
@@ -36,16 +34,17 @@ let item5 = {
 	src: "C:/Users/dayme/Downloads/papa_roach-skeletons.mp3",
 };
 let item6 = {
-	src: "D:/Music/C.C.Catch - Best Of The Best (Remix Version) (2011)/01. Are You Man Enough (Long Version Muscle Mix).mp3"
-}
-let item7 ={
-	src:"C:/Users/dayme/Downloads/Omen.wav - Ungewiss_(audiohunter.ru).mp3"
-}
+	src: "D:/Music/C.C.Catch - Best Of The Best (Remix Version) (2011)/01. Are You Man Enough (Long Version Muscle Mix).mp3",
+};
+let item7 = {
+	src: "C:/Users/dayme/Downloads/Omen.wav - Ungewiss_(audiohunter.ru).mp3",
+};
 let songs: any = [];
 
-songs.push( itemSongs2, itemSongs3, item4, item5,item6,item7);
+songs.push(itemSongs2, itemSongs3, item4, item5, item6, item7);
 
-console.log(songs);
+
+
 
 window.addEventListener("resize", () => {
 	canvas.width = window.innerWidth;
@@ -64,7 +63,6 @@ window.addEventListener("load", () => {
 	audioPlayerController.TrackingEnd();
 	ControllerAudio(audio);
 	keysControllersInit(audioPlayerController);
-	
 });
 
 window.addEventListener("keyup", (e) => {
@@ -108,13 +106,9 @@ function drawModeWaves() {
 	ctx.fillStyle = "rgba(255,255,255,1)";
 	ctx.closePath(); //draw to first point
 	//ctx.shadowColor = "rgba(178, 0, 0,0.9)";
-	ctx.shadowColor = "rgba(254,74,73,0.9)"
+	ctx.shadowColor = "rgba(254,74,73,0.9)";
 	//ctx.shadowColor = "rgba(0,159,183,0.8)"
 	ctx.shadowBlur = 20;
 
 	ctx.fill();
 }
-
-
-
-

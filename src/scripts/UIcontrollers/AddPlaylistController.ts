@@ -1,7 +1,8 @@
 import { ipcRenderer } from "electron";
 import Playlist from "../Classes/Playlist/Playlist";
 import { uuidv4 } from "../requiredLib/requiredLib";
-import PlaylistManager, { playlistManager } from "./../Classes/Playlist/PlaylistManager";
+import PlaylistManager, { playlistManager } from "../Classes/Playlist/PlaylistManager";
+import { renderPlaylists } from "./fileManagerController";
 
 export const addPlaylistUIController = (playlistManager: PlaylistManager) => {
 	const btnAddPlaylist = document.querySelector<HTMLElement>(".add_playlist_btn");
@@ -11,6 +12,8 @@ export const addPlaylistUIController = (playlistManager: PlaylistManager) => {
 	const outputCountFiles = document.querySelector<HTMLElement>(".count_attached_files");
 	const btnCreatePlaylist = document.querySelector<HTMLElement>(".btn_create_playlist");
 	const inputNamePlaylist = document.querySelector<HTMLInputElement>(".input_name_playlist");
+	const renderArea = document.querySelector<HTMLElement>(".render_exists_playlists");
+	const dataAboutPlaylistZone = document.querySelector<HTMLElement>(".data_about_playlists");
 	outputCountFiles.innerHTML = "";
 	let tracks: any[] | string[] = [];
 	btnAddPlaylist.addEventListener("click", () => {
@@ -30,12 +33,13 @@ export const addPlaylistUIController = (playlistManager: PlaylistManager) => {
 	btnCreatePlaylist.addEventListener("click", () => {
 		let namePlaylist = inputNamePlaylist.value;
 
-		if(namePlaylist === "" || tracks.length === 0) return;
+		if (namePlaylist === "" || tracks.length === 0) return;
 
 		let playlist = new Playlist({ dateCreated: new Date().toLocaleString(), id: uuidv4(), name: namePlaylist, tracks });
 		playlistManager.addPlaylist(playlist);
 		playlistManager.saveData();
 		console.log(playlistManager.getPlaylists);
+		renderPlaylists(playlistManager,renderArea,dataAboutPlaylistZone);
 	});
 };
 

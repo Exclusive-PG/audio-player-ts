@@ -1,7 +1,6 @@
-
 import Controllers from "../Classes/Controllers";
 import { loadAudioTags } from "../Controllers/loadTags";
-import AudioPlayerController from "./../Classes/AudioControllers/AudioPlayerController";
+import AudioPlayerController from "../Classes/AudioControllers/AudioPlayerController";
 import { updateVolumeLine } from "./MainControllerAudio";
 
 const controllers = new Controllers();
@@ -31,17 +30,21 @@ export function keysControllersInit(audioPlayerController: AudioPlayerController
 		"ArrowRight",
 	);
 	controllers.addController(document.querySelector(".prev_left"), () => audioPlayerController.prevTrack(), "ArrowLeft");
-	controllers.addController(document.querySelector(".stop_track"), () => audioPlayerController.stopTrack(), "");
+	controllers.addController(document.querySelector(".stop_track"), () => audioPlayerController.stopTrack(), null);
 	controllers.addController(
 		null,
 		() => {
 			audioPlayerController.getVolume().addVolume(0.1);
-            updateVolumeLine(audioPlayerController.volume,document.querySelector(".volume-container"))
+			updateVolumeLine(audioPlayerController.volume, document.querySelector(".volume-container"));
 		},
 		"ArrowUp",
 	);
-	controllers.addController(null, () => {
-        audioPlayerController.getVolume().addVolume(-0.1)
-        updateVolumeLine(audioPlayerController.volume,document.querySelector(".volume-container"))
-    }, "ArrowDown");
+	controllers.addController(
+		null,
+		() => {
+			audioPlayerController.getVolume().addVolume(-0.1);
+			updateVolumeLine(audioPlayerController.volume, document.querySelector(".volume-container"));
+		},
+		"ArrowDown",
+	);
 }
