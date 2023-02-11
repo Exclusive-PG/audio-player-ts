@@ -1,17 +1,20 @@
 import { audioMods, IplaybackRate } from "../../../types/types";
+import { ITrackItem } from "./../../../types/types";
 
 export default class AudioPlayerController {
-	private _currentIndexTrack = 0;
+	private _currentIndexTrack = -1;
 	private _currentPlaybackRateMode = 1;
 	private _modePlay: Function = null;
 	private _audio: HTMLAudioElement = null;
-	private currentListTracks: Array<HTMLAudioElement> = [];
+	private currentListTracks: Array<ITrackItem> = [];
+	private currentPlaylistID: string | number;
 	private MAX_VALUE_VOLUME = 1;
 	private MIN_VALUE_VOLUME = 0;
 	private playbackRateModes: Array<IplaybackRate> = [];
 	private mods: audioMods;
+	private leadingZeroFormatter: Intl.NumberFormat;
 
-	public init(modePlay: Function, audio: HTMLAudioElement, currentListTracks: Array<HTMLAudioElement>) {
+	public init(modePlay: Function, audio: HTMLAudioElement, currentListTracks: Array<ITrackItem>) {
 		this._audio = audio;
 		this._audio.volume = 0.5;
 		this.currentListTracks = currentListTracks;
@@ -27,8 +30,19 @@ export default class AudioPlayerController {
 			isRepeatOne: false,
 		};
 		this.playbackRateAudio(this.playbackRateModes[this._currentPlaybackRateMode]);
+		this.leadingZeroFormatter = new Intl.NumberFormat(undefined, {
+			minimumIntegerDigits: 2,
+		});
+		this.currentPlaylistID = "";
 	}
-
+	public play(skipSrc:boolean = false) {
+		if(skipSrc) this._audio.src = this.currentListTracks[this._currentIndexTrack].src;
+		
+		this.PlayAll();
+	}
+	public pause() {
+		this._audio.pause();
+	}
 	public playOrPause() {
 		if (this._audio === null) return;
 		try {
@@ -109,6 +123,25 @@ export default class AudioPlayerController {
 		this._audio.currentTime = 0;
 		if (this._audio.played) this._audio.pause();
 	}
+
+	public durationVideo(time: number) {
+		const seconds = Math.floor(time % 60);
+		const minutes = Math.floor(time / 60) % 60;
+		const hour = Math.floor(time / 3600);
+
+		if (isNaN(seconds)) return `00:00`;
+
+		if (hour === 0) {
+			return `${minutes}:${this.leadingZeroFormatter.format(seconds)}`;
+		} else {
+			return `${hour}:${this.leadingZeroFormatter.format(minutes)}:${this.leadingZeroFormatter.format(seconds)}`;
+		}
+	}
+
+	public isPlaying(): boolean {
+		return !this._audio.paused;
+	}
+
 	set setShuffleMode(isShuffle: boolean) {
 		this.mods.isShuffle = isShuffle;
 		this.mods.isShuffle && this.shuffleMode();
@@ -120,11 +153,32 @@ export default class AudioPlayerController {
 		if (value > this.MAX_VALUE_VOLUME || value < this.MIN_VALUE_VOLUME) return;
 		this._audio.volume = value;
 	}
+	set setCurrentListTracks(tracks: Array<ITrackItem>) {
+		this.currentListTracks = tracks;
+	}
+	set setCurrentIndexTrack(indexTrack: number) {
+		this._currentIndexTrack = indexTrack;
+	}
+	set setCurrentPlaylistID(id: string) {
+		this.currentPlaylistID = id;
+	}
+	get getCurrentPlaylistID() {
+		return this.currentPlaylistID;
+	}
+	get getCurrentIndexTrack() {
+		return this._currentIndexTrack;
+	}
+	get getCurrentListTracks() {
+		return this.currentListTracks;
+	}
 	get getModsStates() {
 		return this.mods;
 	}
 	get volume() {
 		return this._audio.volume;
+	}
+	get audioElement(){
+		return this._audio;
 	}
 	public getVolume() {
 		console.log(this._audio.volume);

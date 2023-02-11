@@ -10,7 +10,7 @@ import { ControllerAudio } from "./scripts/UIcontrollers/MainControllerAudio";
 import { keysControllersInit } from "./scripts/UIcontrollers/keyController";
 import "./scripts/Classes/Playlist/PlaylistManager";
 import PlaylistManager from "./scripts/Classes/Playlist/PlaylistManager";
-import fileManagerController from "./scripts/UIcontrollers/fileManagerController";
+import fileManagerController, { showCurrentPlayingVideo } from "./scripts/UIcontrollers/fileManagerController";
 
 
 export let canvas: HTMLCanvasElement, ctx: CanvasRenderingContext2D, audio: HTMLAudioElement;
@@ -19,7 +19,7 @@ export const playlistManager = new PlaylistManager();
 
 audio = new Audio();
 const audioContextController = new AudioContextController();
-fileManagerController(playlistManager);
+
 let itemSongs2 = {
 	src: "C:Users/dayme/Downloads/Meduza_Becky_Hill_GOODBOYS_-_Lose_Control_66925984.mp3",
 };
@@ -63,6 +63,7 @@ window.addEventListener("load", () => {
 	audioPlayerController.TrackingEnd();
 	ControllerAudio(audio);
 	keysControllersInit(audioPlayerController);
+	fileManagerController(playlistManager);
 });
 
 window.addEventListener("keyup", (e) => {

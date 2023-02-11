@@ -1,5 +1,13 @@
+//import { IPlaylistItem } from "./../../types/types";
 import Swiper, { Navigation, Pagination } from "swiper";
 import PlaylistManager from "./../Classes/Playlist/PlaylistManager";
+import Playlist from "../Classes/Playlist/Playlist";
+import { ITrackItem } from "./../../types/types";
+import { audioPlayerController } from "./../../renderer";
+import PaginationData from "../Classes/Pagination/Pagination";
+
+const paginationData = new PaginationData(10);
+paginationData.setOutputPageStatus(document.querySelector(".current_and_total_pages_playlist"), true);
 
 const initVariablesFileManagerController = (playlistManager: PlaylistManager) => {
 	const renderArea = document.querySelector<HTMLElement>(".render_exists_playlists");
@@ -14,9 +22,13 @@ const initVariablesFileManagerController = (playlistManager: PlaylistManager) =>
 		fileManagerSection.classList.remove("active");
 	});
 	renderPlaylists(playlistManager, renderArea, dataAboutPlaylistZone);
+	audioPlayerController.audioElement.addEventListener("ended",()=>{
+		showCurrentPlayingVideo();
+	})
 };
 
 export function renderPlaylists(playlistManager: PlaylistManager, outerData: HTMLElement, dataAboutPlaylistZone: HTMLElement) {
+	const playlistPlayingName = document.querySelector<HTMLElement>(".playing-playlist-name");
 	outerData.innerHTML = "";
 	dataAboutPlaylistZone.innerHTML = "";
 	let renderString = "";
@@ -33,13 +45,12 @@ export function renderPlaylists(playlistManager: PlaylistManager, outerData: HTM
             </div>
         `;
 	});
-	
-    outerData.innerHTML = renderString;
-    dataAboutPlaylistZone.innerHTML = `Playlists ${playlistManager.getPlaylists.length} / Tracks ${playlistManager.getAllCountTracks()}`
-	
-    document.querySelectorAll(".playlist_item").forEach((item: HTMLElement) => {
+
+	outerData.innerHTML = renderString;
+	dataAboutPlaylistZone.innerHTML = `Playlists ${playlistManager.getPlaylists.length} / Tracks ${playlistManager.getAllCountTracks()}`;
+
+	document.querySelectorAll(".playlist_item").forEach((item: HTMLElement) => {
 		let timeout: NodeJS.Timeout;
-		clearTimeout(timeout);
 		item.addEventListener("mouseenter", () => {
 			clearTimeout(timeout);
 			item.children[0].children[0].innerHTML = `<i class="fa-regular fa-folder-open fa-5x"></i>`;
@@ -49,9 +60,114 @@ export function renderPlaylists(playlistManager: PlaylistManager, outerData: HTM
 				item.children[0].children[0].innerHTML = `<i class="fa-solid fa-folder fa-5x"></i>`;
 			}, 250);
 		});
+		item.addEventListener("click", () => {
+			let dataAttrID = "playlist-id";
+			if (!item.hasAttribute(dataAttrID)) return;
+
+			let currentPlaylist = playlistManager.getPlaylistbyId(item.getAttribute(dataAttrID));
+
+			if (audioPlayerController.getCurrentPlaylistID !== currentPlaylist.getData.id.toString()) {
+				formattedTracksList(currentPlaylist.getData.tracks).then((data) => {
+					let sortedData = data.sort(dynamicSort("currentIndex"));
+					paginationData.refreshDataPage();
+					audioPlayerController.setCurrentListTracks = sortedData;
+					audioPlayerController.setCurrentIndexTrack = -1;
+					audioPlayerController.setCurrentPlaylistID = currentPlaylist.getData.id.toString();
+					renderAvailableContent(paginationData.renderPagination(sortedData), document.querySelector<HTMLElement>(".content_current_playlist_render"));
+					playlistPlayingName.children[0].textContent = currentPlaylist.getData.name;
+					console.log("render new", audioPlayerController.getCurrentPlaylistID);
+				});
+			}
+			swiper.slideTo(1);
+		});
 	});
 }
+async function formattedTracksList(data: Array<string>): Promise<ITrackItem[]> {
+	let formattedList: Array<ITrackItem> = [];
+	await Promise.all(
+		data.map(async (item, index) => {
+			await getDuration(item).then((duration: number) => {
+				formattedList.push({ src: item, currentIndex: index, time: audioPlayerController.durationVideo(duration) });
+			});
+		}),
+	);
+	return formattedList;
+}
+async function getDuration(src: any) {
+	return await new Promise(function (resolve) {
+		let audio = new Audio(src);
+		audio.addEventListener("loadedmetadata", function () {
+			resolve(audio.duration);
+		});
+	});
+}
+function dynamicSort(property: any) {
+	let sortOrder = 1;
+	if (property[0] === "-") {
+		sortOrder = -1;
+		property = property.substr(1);
+	}
+	return function (a: any, b: any) {
+		/* next line works with strings and numbers,
+		 * and you may want to customize it to your needs
+		 */
+		let result = a[property] < b[property] ? -1 : a[property] > b[property] ? 1 : 0;
+		return result * sortOrder;
+	};
+}
+const renderAvailableContent = (arrayCurrentPlaylist: Array<ITrackItem>, outResult: HTMLElement) => {
+	outResult.innerHTML = "";
 
+	try {
+		arrayCurrentPlaylist?.forEach(({ currentIndex, src, time }, index) => {
+			outResult.innerHTML += `
+		<div class="content_item" current-index=${currentIndex} full-path="${src}">
+		<div class="data_name_content_item">${+currentIndex + 1}. ${src.split(/[\\/]/).pop()} </div>
+		<div class="ext_content_item">${time}</div>
+		<div class="play_current_content"  ><i class="fa-solid fa-play fa-2x"></i></div>
+		</div>
+		`;
+		});
+	} catch {
+		console.log("not full page");
+	}
+	const playBtns = document.querySelectorAll(".content_item");
+	playBtns.forEach((item: HTMLElement) => {
+		item.addEventListener("click", () => {
+			let _itemCurrentIndex = parseInt(item.getAttribute("current-index"));
+			console.log(audioPlayerController.getCurrentIndexTrack,_itemCurrentIndex )
+			if(audioPlayerController.getCurrentIndexTrack !== _itemCurrentIndex){
+				audioPlayerController.setCurrentIndexTrack = +_itemCurrentIndex;
+				audioPlayerController.play(true)
+			}else{
+				audioPlayerController.isPlaying() ? audioPlayerController.pause() : audioPlayerController.play();
+			}
+
+			console.log(_itemCurrentIndex);
+			showCurrentPlayingVideo();
+
+		});
+	});
+};
+
+export const showCurrentPlayingVideo = () => {
+	let contentItems = document.querySelectorAll(".content_item");
+
+	//console.log(contentItems)
+	contentItems.forEach((item: HTMLElement) => {
+		if (!item.hasAttribute("current-index")) return;
+
+		if (parseInt(item.getAttribute("current-index")) === audioPlayerController.getCurrentIndexTrack) {
+			item.classList.add("playing-track");
+			item.children[2].innerHTML = audioPlayerController.isPlaying() ? `<i class="fa-solid fa-pause fa-2x"></i>` : `<i class="fa-solid fa-play fa-2x"></i>`;
+		} else {
+			item.classList.remove("playing-track");
+			item.children[2].innerHTML = `<i class="fa-solid fa-play fa-2x"></i>`;
+		}
+	});
+
+	//current-index=${index}
+};
 ///connect Swiper
 Swiper.use([Navigation, Pagination]);
 
@@ -69,13 +185,23 @@ const swiper = new Swiper(".swiper_playlist_or_content", {
 	//allowTouchMove:false
 });
 
+//controls pagination
+document.querySelector(".next-playlist-page").addEventListener("click", () => {
+	let data = audioPlayerController.getCurrentListTracks;
+	paginationData.NextPage(data);
+	renderAvailableContent(paginationData.renderPagination(data), document.querySelector<HTMLElement>(".content_current_playlist_render"));
+	showCurrentPlayingVideo();
+});
 
+document.querySelector(".prev-playlist-page").addEventListener("click", () => {
+	let data = audioPlayerController.getCurrentListTracks;
+	paginationData.PreviousPage();
+	renderAvailableContent(paginationData.renderPagination(data), document.querySelector<HTMLElement>(".content_current_playlist_render"));
+	showCurrentPlayingVideo();
+});
 
-const fileManagerController = (playlistManager: PlaylistManager) =>{
-    initVariablesFileManagerController(playlistManager);
-
-}
-
-
+const fileManagerController = (playlistManager: PlaylistManager) => {
+	initVariablesFileManagerController(playlistManager);
+};
 
 export default fileManagerController;

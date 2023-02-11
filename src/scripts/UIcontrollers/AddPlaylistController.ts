@@ -3,6 +3,7 @@ import Playlist from "../Classes/Playlist/Playlist";
 import { uuidv4 } from "../requiredLib/requiredLib";
 import PlaylistManager, { playlistManager } from "../Classes/Playlist/PlaylistManager";
 import { renderPlaylists } from "./fileManagerController";
+import { ITrackItem } from "./../../types/types";
 
 export const addPlaylistUIController = (playlistManager: PlaylistManager) => {
 	const btnAddPlaylist = document.querySelector<HTMLElement>(".add_playlist_btn");
@@ -35,6 +36,7 @@ export const addPlaylistUIController = (playlistManager: PlaylistManager) => {
 
 		if (namePlaylist === "" || tracks.length === 0) return;
 
+		
 		let playlist = new Playlist({ dateCreated: new Date().toLocaleString(), id: uuidv4(), name: namePlaylist, tracks });
 		playlistManager.addPlaylist(playlist);
 		playlistManager.saveData();
@@ -42,5 +44,14 @@ export const addPlaylistUIController = (playlistManager: PlaylistManager) => {
 		renderPlaylists(playlistManager,renderArea,dataAboutPlaylistZone);
 	});
 };
+
+// function formattedTracksList(data:Array<string>){
+// 	let formattedList:Array<ITrackItem> = []
+
+// 	data.forEach((item,index)=>{
+// 		formattedList:
+// 	})
+// }
+
 
 addPlaylistUIController(playlistManager);

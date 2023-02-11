@@ -62,6 +62,7 @@ export default class PaginationData {
 	}
 	public refreshDataPage() {
 		this.config.startIndex = 0;
+		this.config.currentPage = 1;
 	}
 
 	get startIndex() {

@@ -27,6 +27,9 @@ export default class PlaylistManager {
 		FileSystem.createJSONData(this.data, FileSystem.PATHS.playlist);
 		return this;
 	}
+	public getPlaylistbyId(id: string):Playlist{
+		return this.getPlaylists.filter(item => item.getData.id === id)[0]
+	}
 	get getPlaylists() {
 		return this.data;
 	}

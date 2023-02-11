@@ -7,6 +7,8 @@
 	top: -100%;
 	z-index: $zIndexSideSections;
 	transition: 0.2s all ease-in-out;
+	max-height: 100%;
+	overflow: hidden;
 }
 
 .file_manager.active {
@@ -56,6 +58,8 @@
 }
 .wrapper_playlist_item {
 	position: relative;
+	z-index: 5;
+	user-select: none;
 	.count_content {
 		display: flex;
 		justify-content: center;
@@ -73,14 +77,83 @@
 	}
 }
 
-.hd_file_manager{
-    color: $mainControllersColor;
-    margin: 80px 20px 20px 20px;
-    text-align: center;
-    font-size: 30px;
+.hd_file_manager {
+	color: $mainControllersColor;
+	margin: 80px 20px 20px 20px;
+	text-align: center;
+	font-size: 30px;
 }
 
-.data_about_playlists{
-    text-align: center;
-    color: $mainControllersColor;
+.data_about_playlists {
+	text-align: center;
+	color: $mainControllersColor;
+}
+
+.content_item {
+	color: #fff;
+	display: grid;
+	grid-template-columns: repeat(3, 1fr);
+	justify-content: center;
+	align-items: center;
+	padding: 20px 15px;
+	&:hover {
+		cursor: pointer;
+		color: $mainRedColor;
+		background-color: #fff;
+	}
+}
+.content_item.playing-track {
+	color: $mainRedColor;
+	background-color: #fff;
+}
+.content_current_playlist_render {
+	//padding: 0 15px;
+	// display:grid;
+	// grid-template-columns: repeat(2,1fr);
+	// justify-content: center;
+	// align-items: center;
+	.play_current_content {
+		display: grid;
+		justify-content: center;
+	}
+	.ext_content_item {
+		display: grid;
+		justify-content: center;
+	}
+}
+
+.wrapper_content_item {
+	margin-bottom: 40px;
+}
+
+.data_name_content_item {
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	overflow: hidden;
+}
+
+.pagination_current_playlist {
+	margin-top: 20px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	color: #fff;
+	div {
+		margin-right: 20px;
+		&:hover {
+			cursor: pointer;
+			color: $mainRedColor;
+		}
+	}
+}
+.playing-playlist-name {
+	padding: 20px;
+	font-size: 25px;
+	color: $mainRedColor;
+//	font-family: "Poppins", sans-serif;
+	font-weight: 800;
+}
+
+.current_and_total_pages_playlist {
+	letter-spacing: 2px;
 }
