@@ -6,6 +6,11 @@ export default class Playlist {
 	constructor(data: IPlaylistItem) {
 		this.data = data;
 	}
+	public addTrack(src:string){
+		console.log(this.data)
+		this.data.tracks.push(src)
+		
+	}
 	get getData() {
 		return this.data;
 	}

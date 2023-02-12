@@ -5,6 +5,7 @@ import Playlist from "../Classes/Playlist/Playlist";
 import { ITrackItem } from "./../../types/types";
 import { audioPlayerController } from "./../../renderer";
 import PaginationData from "../Classes/Pagination/Pagination";
+import { playlistManager } from "./../../renderer";
 
 const paginationData = new PaginationData(10);
 paginationData.setOutputPageStatus(document.querySelector(".current_and_total_pages_playlist"), true);
@@ -22,9 +23,9 @@ const initVariablesFileManagerController = (playlistManager: PlaylistManager) =>
 		fileManagerSection.classList.remove("active");
 	});
 	renderPlaylists(playlistManager, renderArea, dataAboutPlaylistZone);
-	audioPlayerController.audioElement.addEventListener("ended",()=>{
+	audioPlayerController.audioElement.addEventListener("ended", () => {
 		showCurrentPlayingVideo();
-	})
+	});
 };
 
 export function renderPlaylists(playlistManager: PlaylistManager, outerData: HTMLElement, dataAboutPlaylistZone: HTMLElement) {
@@ -33,8 +34,8 @@ export function renderPlaylists(playlistManager: PlaylistManager, outerData: HTM
 	dataAboutPlaylistZone.innerHTML = "";
 	let renderString = "";
 
-	console.log("Data:", playlistManager.getPlaylists);
-	playlistManager.getPlaylists.forEach(({ getData }) => {
+	console.log("Data:", playlistManager.getCustomPlaylists);
+	playlistManager.getCustomPlaylists.forEach(({ getData }) => {
 		renderString += `
             <div class="playlist_item" playlist-id="${getData.id}">     
                 <span class="wrapper_playlist_item">
@@ -47,7 +48,7 @@ export function renderPlaylists(playlistManager: PlaylistManager, outerData: HTM
 	});
 
 	outerData.innerHTML = renderString;
-	dataAboutPlaylistZone.innerHTML = `Playlists ${playlistManager.getPlaylists.length} / Tracks ${playlistManager.getAllCountTracks()}`;
+	dataAboutPlaylistZone.innerHTML = `Playlists ${playlistManager.getCustomPlaylists.length} / Tracks ${playlistManager.getAllCountTracks()}`;
 
 	document.querySelectorAll(".playlist_item").forEach((item: HTMLElement) => {
 		let timeout: NodeJS.Timeout;
@@ -73,7 +74,7 @@ export function renderPlaylists(playlistManager: PlaylistManager, outerData: HTM
 					audioPlayerController.setCurrentListTracks = sortedData;
 					audioPlayerController.setCurrentIndexTrack = -1;
 					audioPlayerController.setCurrentPlaylistID = currentPlaylist.getData.id.toString();
-					renderAvailableContent(paginationData.renderPagination(sortedData), document.querySelector<HTMLElement>(".content_current_playlist_render"));
+					renderAvailableContent(paginationData.renderPagination(sortedData), playlistManager, document.querySelector<HTMLElement>(".content_current_playlist_render"));
 					playlistPlayingName.children[0].textContent = currentPlaylist.getData.name;
 					console.log("render new", audioPlayerController.getCurrentPlaylistID);
 				});
@@ -115,16 +116,17 @@ function dynamicSort(property: any) {
 		return result * sortOrder;
 	};
 }
-const renderAvailableContent = (arrayCurrentPlaylist: Array<ITrackItem>, outResult: HTMLElement) => {
+const renderAvailableContent = (arrayCurrentPlaylist: Array<ITrackItem>, playlistManager: PlaylistManager, outResult: HTMLElement) => {
 	outResult.innerHTML = "";
 
 	try {
 		arrayCurrentPlaylist?.forEach(({ currentIndex, src, time }, index) => {
 			outResult.innerHTML += `
-		<div class="content_item" current-index=${currentIndex} full-path="${src}">
+		<div class="content_item" current-index=${currentIndex} >
 		<div class="data_name_content_item">${+currentIndex + 1}. ${src.split(/[\\/]/).pop()} </div>
 		<div class="ext_content_item">${time}</div>
-		<div class="play_current_content"  ><i class="fa-solid fa-play fa-2x"></i></div>
+		<div class="play_current_content" ><i class="fa-solid fa-play fa-2x"></i></div>
+		<div class="add_track_to_saved_list"><i class="fa-regular fa-heart fa-2x btn_save_track" full-path="${src}"></i></div>
 		</div>
 		`;
 		});
@@ -133,19 +135,27 @@ const renderAvailableContent = (arrayCurrentPlaylist: Array<ITrackItem>, outResu
 	}
 	const playBtns = document.querySelectorAll(".content_item");
 	playBtns.forEach((item: HTMLElement) => {
-		item.addEventListener("click", () => {
+		item.addEventListener("click", (e: any) => {
+			if (e.target.classList.contains("btn_save_track")) {
+				let srcElement = e.target.getAttribute("full-path");
+				playlistManager.addTrackToSavedPlaylist(srcElement)
+				e.target.innerHTML = `<i class="fa-solid fa-heart"></i>`
+				return;
+			}
+
+			//if(e.currentTarget)
+
 			let _itemCurrentIndex = parseInt(item.getAttribute("current-index"));
-			console.log(audioPlayerController.getCurrentIndexTrack,_itemCurrentIndex )
-			if(audioPlayerController.getCurrentIndexTrack !== _itemCurrentIndex){
+			console.log(audioPlayerController.getCurrentIndexTrack, _itemCurrentIndex);
+			if (audioPlayerController.getCurrentIndexTrack !== _itemCurrentIndex) {
 				audioPlayerController.setCurrentIndexTrack = +_itemCurrentIndex;
-				audioPlayerController.play(true)
-			}else{
+				audioPlayerController.play(true);
+			} else {
 				audioPlayerController.isPlaying() ? audioPlayerController.pause() : audioPlayerController.play();
 			}
 
 			console.log(_itemCurrentIndex);
 			showCurrentPlayingVideo();
-
 		});
 	});
 };
@@ -189,14 +199,14 @@ const swiper = new Swiper(".swiper_playlist_or_content", {
 document.querySelector(".next-playlist-page").addEventListener("click", () => {
 	let data = audioPlayerController.getCurrentListTracks;
 	paginationData.NextPage(data);
-	renderAvailableContent(paginationData.renderPagination(data), document.querySelector<HTMLElement>(".content_current_playlist_render"));
+	renderAvailableContent(paginationData.renderPagination(data), playlistManager, document.querySelector<HTMLElement>(".content_current_playlist_render"));
 	showCurrentPlayingVideo();
 });
 
 document.querySelector(".prev-playlist-page").addEventListener("click", () => {
 	let data = audioPlayerController.getCurrentListTracks;
 	paginationData.PreviousPage();
-	renderAvailableContent(paginationData.renderPagination(data), document.querySelector<HTMLElement>(".content_current_playlist_render"));
+	renderAvailableContent(paginationData.renderPagination(data), playlistManager, document.querySelector<HTMLElement>(".content_current_playlist_render"));
 	showCurrentPlayingVideo();
 });
 

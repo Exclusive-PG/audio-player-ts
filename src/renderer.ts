@@ -10,6 +10,7 @@ import { ControllerAudio } from "./scripts/UIcontrollers/MainControllerAudio";
 import { keysControllersInit } from "./scripts/UIcontrollers/keyController";
 import "./scripts/Classes/Playlist/PlaylistManager";
 import PlaylistManager from "./scripts/Classes/Playlist/PlaylistManager";
+
 import fileManagerController, { showCurrentPlayingVideo } from "./scripts/UIcontrollers/fileManagerController";
 
 

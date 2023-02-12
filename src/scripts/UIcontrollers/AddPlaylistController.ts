@@ -40,7 +40,7 @@ export const addPlaylistUIController = (playlistManager: PlaylistManager) => {
 		let playlist = new Playlist({ dateCreated: new Date().toLocaleString(), id: uuidv4(), name: namePlaylist, tracks });
 		playlistManager.addPlaylist(playlist);
 		playlistManager.saveData();
-		console.log(playlistManager.getPlaylists);
+		console.log(playlistManager.getCustomPlaylists);
 		renderPlaylists(playlistManager,renderArea,dataAboutPlaylistZone);
 	});
 };
