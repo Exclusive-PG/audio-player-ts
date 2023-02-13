@@ -12,6 +12,7 @@ import "./scripts/Classes/Playlist/PlaylistManager";
 import PlaylistManager from "./scripts/Classes/Playlist/PlaylistManager";
 
 import fileManagerController, { showCurrentPlayingVideo } from "./scripts/UIcontrollers/fileManagerController";
+import equaliazerController from './scripts/UIcontrollers/EqualizerController';
 
 
 export let canvas: HTMLCanvasElement, ctx: CanvasRenderingContext2D, audio: HTMLAudioElement;
@@ -65,6 +66,7 @@ window.addEventListener("load", () => {
 	ControllerAudio(audio);
 	keysControllersInit(audioPlayerController);
 	fileManagerController(playlistManager);
+	equaliazerController();
 });
 
 window.addEventListener("keyup", (e) => {

@@ -41,8 +41,6 @@
 		font-family: "Poppins", sans-serif;
 		font-weight: bolder;
 		font-size: 25px;
-		//background: #17202A;
-		// border-radius: 30px;
 		color: #fff;
 		transition: 0.3s ease-in-out;
 		&:hover {
@@ -51,9 +49,19 @@
 			transform: translateY(-20px);
 
 			.count_content {
-				//transform: translateY(-100px);
 				animation: bounce-in-bottom 0.8s both;
 			}
+			.openFolder{
+				
+				display: block;
+			}
+			.closeFolder{
+				display: none;
+			}
+		}
+
+		.openFolder{
+			display: none;
 		}
 	}
 }
@@ -144,7 +152,6 @@
 	min-height: 32px;
 	max-height: 50px;
 }
-
 
 .wrapper_content_item {
 	margin-bottom: 40px;

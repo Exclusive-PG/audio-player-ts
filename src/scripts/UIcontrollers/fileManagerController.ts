@@ -39,9 +39,10 @@ export function renderPlaylists(playlistManager: PlaylistManager, outerData: HTM
 		renderString += `
             <div class="playlist_item" playlist-id="${getData.id}">     
                 <span class="wrapper_playlist_item">
-                    <div class="icon_playlist"><i class="fa-solid fa-folder fa-5x"></i></div>
+                    <div class="icon_playlist closeFolder"><i class="fa-solid fa-folder fa-5x"></i></div>
+					<div class="icon_playlist openFolder"><i class="fa-regular fa-folder-open fa-5x "></i></div>
                     <div class="data_playlist_item">${getData.name.toUpperCase()}</div>
-                    <div class="count_content">${getData.tracks.length}</div>
+                   <div class="count_content">${getData.tracks.length}</div>
                 </span>
             </div>
         `;
@@ -51,16 +52,17 @@ export function renderPlaylists(playlistManager: PlaylistManager, outerData: HTM
 	dataAboutPlaylistZone.innerHTML = `Playlists ${playlistManager.getCustomPlaylists.length} / Tracks ${playlistManager.getAllCountTracks()}`;
 
 	document.querySelectorAll(".playlist_item").forEach((item: HTMLElement) => {
-		let timeout: NodeJS.Timeout;
-		item.addEventListener("mouseenter", () => {
-			clearTimeout(timeout);
-			item.children[0].children[0].innerHTML = `<i class="fa-regular fa-folder-open fa-5x"></i>`;
-		});
-		item.addEventListener("mouseleave", () => {
-			timeout = setTimeout(() => {
-				item.children[0].children[0].innerHTML = `<i class="fa-solid fa-folder fa-5x"></i>`;
-			}, 250);
-		});
+		//let timeout: NodeJS.Timeout;
+		// item.addEventListener("mouseenter", () => {
+		// 	clearTimeout(timeout);	
+		// 	item.children[0].children[0].innerHTML = `<i class="fa-regular fa-folder-open fa-5x openFolder"></i>`;
+		// });
+		// item.addEventListener("mouseleave", () => {
+		// 	timeout = setTimeout(() => {
+		// 		item.children[0].children[0].innerHTML = `<i class="fa-solid fa-folder fa-5x closeFolder"></i>`;
+		// 	}, 250);
+		// });
+
 		item.addEventListener("click", () => {
 			let dataAttrID = "playlist-id";
 			if (!item.hasAttribute(dataAttrID)) return;
@@ -81,8 +83,10 @@ export function renderPlaylists(playlistManager: PlaylistManager, outerData: HTM
 			}
 			swiper.slideTo(1);
 		});
+
 	});
 }
+
 async function formattedTracksList(data: Array<string>): Promise<ITrackItem[]> {
 	let formattedList: Array<ITrackItem> = [];
 	await Promise.all(
@@ -142,9 +146,6 @@ const renderAvailableContent = (arrayCurrentPlaylist: Array<ITrackItem>, playlis
 				e.target.innerHTML = `<i class="fa-solid fa-heart"></i>`
 				return;
 			}
-
-			//if(e.currentTarget)
-
 			let _itemCurrentIndex = parseInt(item.getAttribute("current-index"));
 			console.log(audioPlayerController.getCurrentIndexTrack, _itemCurrentIndex);
 			if (audioPlayerController.getCurrentIndexTrack !== _itemCurrentIndex) {
