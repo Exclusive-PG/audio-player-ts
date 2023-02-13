@@ -25,7 +25,22 @@
 		cursor: pointer;
 	}
 }
-
+.equalizer {
+	overflow-y: scroll;
+	max-height: 90vh;
+}
+.equalizer::-webkit-scrollbar {
+	width: 20px;
+}
+.equalizer::-webkit-scrollbar-thumb {
+	background-color: #fff;
+	border-radius: 20px;
+	border: 4px solid rgba(0, 0, 0, 0);
+	background-clip: content-box;
+	min-width: 32px;
+	min-height: 32px;
+	max-height: 50px;
+}
 .sliders_equalizer_wrapper {
 	height: 65vh;
 	display: flex;
@@ -166,24 +181,24 @@ input[type="range"]:focus::-ms-fill-upper {
 
 .chk-none {
 	display: none; /*remove checkbox*/
-  }
-  
-  .toggle {
+}
+
+.toggle {
 	cursor: pointer;
-    display: inline-block;
-    position: relative;
-    width: 100px;
-    height: 50px;
-    border-radius: 50px;
-    border: 4px solid white;
-    overflow: hidden;
-    left: 50%;
-    top: 50%;
-    transform: translate(-70%);
-  }
-  
-  .toggle::before,
-  .toggle::after {
+	display: inline-block;
+	position: relative;
+	width: 100px;
+	height: 50px;
+	border-radius: 50px;
+	border: 4px solid white;
+	overflow: hidden;
+	left: 50%;
+	top: 50%;
+	transform: translate(-70%);
+}
+
+.toggle::before,
+.toggle::after {
 	position: absolute;
 	width: 100px;
 	height: 50px;
@@ -191,28 +206,28 @@ input[type="range"]:focus::-ms-fill-upper {
 	padding: 16px 10px;
 	font-weight: bold;
 	box-sizing: border-box;
-	transition: left .5s ease-in-out;
-  }
-  
-  .toggle::before {
+	transition: left 0.5s ease-in-out;
+}
+
+.toggle::before {
 	content: "";
 	color: $mainControllersColor;
 	background-color: $mainRedColor;
 	text-align: left;
 	box-shadow: inset 0 0 5px 1px rgba(0, 0, 128, 0.3);
 	left: -50px;
-  }
-  
-  .toggle::after {
+}
+
+.toggle::after {
 	content: "";
 	background-color: lightgrey;
 	text-align: right;
 	color: grey;
 	box-shadow: inset 0 0 5px 1px rgba(0, 0, 0, 0.3);
 	left: 0px;
-  }
-  
-  .handle {
+}
+
+.handle {
 	display: inline-block;
 	position: relative;
 	width: 45px;
@@ -222,37 +237,53 @@ input[type="range"]:focus::-ms-fill-upper {
 	box-shadow: 0 0 5px 1px rgba(0, 0, 0, 0.3);
 	z-index: 5;
 	left: 0px;
-	transition: left .5s ease-in-out, background-color .5s ease-in-out;
-  }
-  
+	transition: left 0.5s ease-in-out, background-color 0.5s ease-in-out;
+}
 
-  
-  input[type="checkbox"]:checked + .toggle::before {
+input[type="checkbox"]:checked + .toggle::before {
 	left: 0px;
-  }
-  
-  input[type="checkbox"]:checked + .toggle::after {
+}
+
+input[type="checkbox"]:checked + .toggle::after {
 	left: 50px;
-  }
-  
-  input[type="checkbox"]:checked + .toggle .handle {
+}
+
+input[type="checkbox"]:checked + .toggle .handle {
 	left: 50px;
 	background-color: #ec5c5b;
-  }
-  
+}
 
-  .checkbox_section{
+.checkbox_section {
 	display: flex;
 	justify-content: center;
 	align-items: center;
-  }
-  .setting_item{
+}
+.setting_item {
 	display: flex;
 	justify-content: center;
 	align-items: center;
 	margin-left: 50px;
-	.setting_item_title{
+	.setting_item_title {
 		color: $mainControllersColor;
 		text-align: center;
 	}
-  }
+}
+.range_section {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	flex-direction: column;
+}
+.range_input_eq_mode {
+	max-width: 50%;
+}
+.range_title {
+	font-size: 20px;
+	color: $mainControllersColor;
+	text-align: center;
+}
+.range_item {
+	margin-top: 50px;
+	text-align: center;
+	width: 100%;
+}

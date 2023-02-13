@@ -45,7 +45,7 @@ export default class AudioContextController {
 		this.source.connect(this.stereoNode).connect(this.audioContext.destination);
 	}
 	public StereoNodeDisconnect() {
-		this.gainNode.disconnect();
+		this.stereoNode.disconnect();
 	}
 	public initFilters() {
 		this.filters = {

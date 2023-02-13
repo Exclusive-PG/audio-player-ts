@@ -8,6 +8,8 @@ function initEqualizerElements(audioContextController:AudioContextController){
     const sliders = document.querySelectorAll(".slider_param");
     const checkBoxGainMode = document.querySelector<HTMLInputElement>(".gain_mode");
     const checkBoxPannerMode = document.querySelector<HTMLInputElement>(".panner_mode")
+    const inputGainMode = document.querySelector<HTMLInputElement>(".gain_input_value");
+    const inputPannerMode = document.querySelector<HTMLInputElement>(".panner_input_value");
     btnOpenEqualiazer.addEventListener("click", () =>{
         equaliazerSection.classList.add("active")
     })
@@ -25,6 +27,17 @@ function initEqualizerElements(audioContextController:AudioContextController){
         checkBoxGainMode.checked ?
             audioContextController.GainNodeConnect() : audioContextController.GainNodeDisconnect();
         
+    })
+    checkBoxPannerMode.addEventListener("change",()=>{
+        checkBoxPannerMode.checked ?
+            audioContextController.StereoNodeConnect() : audioContextController.StereoNodeDisconnect();
+        
+    })
+    inputGainMode.addEventListener("input",()=>{
+        audioContextController.setGainNode = +inputGainMode.value;
+    })
+    inputPannerMode.addEventListener("input",()=>{
+        audioContextController.setStereoNode = +inputPannerMode.value;
     })
 }
 
