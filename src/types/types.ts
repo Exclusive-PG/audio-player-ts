@@ -18,8 +18,10 @@ export interface ITrackItem {
 	currentIndex: string | number;
 	time: string | number;
 }
-// normalSpeed: number;
-// halfSpeed: number;
-// doubleSpeed: number;
-// backWardsNormanlSpeed:number;
-// backWardsHalfSpeed:number;
+
+export interface IAudioFilters {
+	highShelf: BiquadFilterNode;
+	lowShelf: BiquadFilterNode;
+	highPass: BiquadFilterNode;
+	lowPass: BiquadFilterNode;
+}

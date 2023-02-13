@@ -66,7 +66,7 @@ window.addEventListener("load", () => {
 	ControllerAudio(audio);
 	keysControllersInit(audioPlayerController);
 	fileManagerController(playlistManager);
-	equaliazerController();
+	equaliazerController(audioContextController);
 });
 
 window.addEventListener("keyup", (e) => {

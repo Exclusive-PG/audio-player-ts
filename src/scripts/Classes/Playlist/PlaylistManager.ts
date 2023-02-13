@@ -17,7 +17,14 @@ export default class PlaylistManager {
 		if (!fs.existsSync(FileSystem.PATHS.playlist)) return;
 
 		FileSystem.loadData(FileSystem.PATHS.playlist).forEach((item: any) => {
-			this.addPlaylist(new Playlist(item.data));
+			console.log(item)
+			this.addPlaylist(new Playlist({
+				dateCreated:item.data.dateCreated,
+				id:item.data.id,
+				name:item.data.name,
+				//@ts-ignore
+				tracks:[...new Set(item.data.tracks)]
+			}));
 		});
 		if (!fs.existsSync(FileSystem.PATHS.saved)) {
 			FileSystem.createJSONData(this.getSavedPlaylist, FileSystem.PATHS.saved);

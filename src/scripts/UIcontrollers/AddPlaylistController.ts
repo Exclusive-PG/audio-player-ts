@@ -37,7 +37,7 @@ export const addPlaylistUIController = (playlistManager: PlaylistManager) => {
 		if (namePlaylist === "" || tracks.length === 0) return;
 
 		
-		let playlist = new Playlist({ dateCreated: new Date().toLocaleString(), id: uuidv4(), name: namePlaylist, tracks });
+		let playlist = new Playlist({ dateCreated: new Date().toLocaleString(), id: uuidv4(), name: namePlaylist,tracks:[...new Set(tracks)] });
 		playlistManager.addPlaylist(playlist);
 		playlistManager.saveData();
 		console.log(playlistManager.getCustomPlaylists);
