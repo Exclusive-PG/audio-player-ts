@@ -48,6 +48,15 @@ export default class PlaylistManager {
 		}, 0);
 		return totalTracks;
 	}
+	public isSaved(src:string) :boolean {
+		return this.getSavedPlaylist.getData.tracks.includes(src)
+
+	}
+	public removeTrackFromSaved(src:string){
+		this.getSavedPlaylist.getData.tracks.splice(this.getSavedPlaylist.getData.tracks.indexOf(src, 1));
+		console.log(this.getSavedPlaylist.getData.tracks)
+		FileSystem.createJSONData(this.getSavedPlaylist, FileSystem.PATHS.saved);
+	}
 	public saveData() {
 		FileSystem.createJSONData(this.getCustomPlaylists, FileSystem.PATHS.playlist);
 		FileSystem.createJSONData(this.getSavedPlaylist, FileSystem.PATHS.saved);

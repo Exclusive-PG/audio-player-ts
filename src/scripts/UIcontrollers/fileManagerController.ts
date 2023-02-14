@@ -52,16 +52,6 @@ export function renderPlaylists(playlistManager: PlaylistManager, outerData: HTM
 	dataAboutPlaylistZone.innerHTML = `Playlists ${playlistManager.getCustomPlaylists.length} / Tracks ${playlistManager.getAllCountTracks()}`;
 
 	document.querySelectorAll(".playlist_item").forEach((item: HTMLElement) => {
-		//let timeout: NodeJS.Timeout;
-		// item.addEventListener("mouseenter", () => {
-		// 	clearTimeout(timeout);	
-		// 	item.children[0].children[0].innerHTML = `<i class="fa-regular fa-folder-open fa-5x openFolder"></i>`;
-		// });
-		// item.addEventListener("mouseleave", () => {
-		// 	timeout = setTimeout(() => {
-		// 		item.children[0].children[0].innerHTML = `<i class="fa-solid fa-folder fa-5x closeFolder"></i>`;
-		// 	}, 250);
-		// });
 
 		item.addEventListener("click", () => {
 			let dataAttrID = "playlist-id";
@@ -123,11 +113,11 @@ const renderAvailableContent = (arrayCurrentPlaylist: Array<ITrackItem>, playlis
 	try {
 		arrayCurrentPlaylist?.forEach(({ currentIndex, src, time }, index) => {
 			outResult.innerHTML += `
-		<div class="content_item" current-index=${currentIndex} >
+		<div class="content_item" current-index=${currentIndex} full-path="${src}">
 		<div class="data_name_content_item">${+currentIndex + 1}. ${src.split(/[\\/]/).pop()} </div>
 		<div class="ext_content_item">${time}</div>
 		<div class="play_current_content" ><i class="fa-solid fa-play fa-2x"></i></div>
-		<div class="add_track_to_saved_list"><i class="fa-regular fa-heart fa-2x btn_save_track" full-path="${src}"></i></div>
+		<div class="add_track_to_saved_list">${playlistManager.isSaved(src) ? `<i class="fa-solid fa-heart fa-2x btn_remove_track" full-path="${src}"></i>`: `<i class="fa-regular fa-heart fa-2x btn_save_track" full-path="${src}"></i>`}</div>
 		</div>
 		`;
 		});
@@ -137,14 +127,24 @@ const renderAvailableContent = (arrayCurrentPlaylist: Array<ITrackItem>, playlis
 	const playBtns = document.querySelectorAll(".content_item");
 	playBtns.forEach((item: HTMLElement) => {
 		item.addEventListener("click", (e: any) => {
+	
 			if (e.target.classList.contains("btn_save_track")) {
 				let srcElement = e.target.getAttribute("full-path");
 				playlistManager.addTrackToSavedPlaylist(srcElement)
-				e.target.innerHTML = `<i class="fa-solid fa-heart"></i>`
+				e.target.innerHTML = `<i class="fa-solid fa-heart fa-2x btn_remove_track" full-path="${e.currentTarget.getAttribute("full-path")}"></i>`
+				console.log("add",srcElement)
+				return;
+			}
+		
+			if (e.target.parentElement.classList.contains("btn_remove_track")) {
+				let srcElement = e.target.parentElement.getAttribute("full-path");
+				console.log("remove",srcElement)
+				playlistManager.removeTrackFromSaved(srcElement)
+				e.target.parentElement.innerHTML = `<i class="fa-regular fa-heart fa-2x btn_save_track" full-path="${e.currentTarget.getAttribute("full-path")}"></i>`;
 				return;
 			}
 			let _itemCurrentIndex = parseInt(item.getAttribute("current-index"));
-			console.log(audioPlayerController.getCurrentIndexTrack, _itemCurrentIndex);
+			
 			if (audioPlayerController.getCurrentIndexTrack !== _itemCurrentIndex) {
 				audioPlayerController.setCurrentIndexTrack = +_itemCurrentIndex;
 				audioPlayerController.play(true);
