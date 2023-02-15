@@ -24,7 +24,7 @@ const initVariablesFileManagerController = (playlistManager: PlaylistManager) =>
 	});
 	renderPlaylists(playlistManager, renderArea, dataAboutPlaylistZone);
 	audioPlayerController.audioElement.addEventListener("ended", () => {
-		showCurrentPlayingVideo();
+		showCurrentPlayingVideo(document.querySelectorAll(".content_item"));
 	});
 };
 
@@ -60,8 +60,8 @@ export function renderPlaylists(playlistManager: PlaylistManager, outerData: HTM
 			let currentPlaylist = playlistManager.getPlaylistbyId(item.getAttribute(dataAttrID));
 
 			if (audioPlayerController.getCurrentPlaylistID !== currentPlaylist.getData.id.toString()) {
-				formattedTracksList(currentPlaylist.getData.tracks).then((data) => {
-					let sortedData = data.sort(dynamicSort("currentIndex"));
+				audioPlayerController.formattedTracksList(currentPlaylist.getData.tracks).then((data) => {
+					let sortedData = data.sort(playlistManager.dynamicSort("currentIndex"));
 					paginationData.refreshDataPage();
 					audioPlayerController.setCurrentListTracks = sortedData;
 					audioPlayerController.setCurrentIndexTrack = -1;
@@ -77,36 +77,6 @@ export function renderPlaylists(playlistManager: PlaylistManager, outerData: HTM
 	});
 }
 
-async function formattedTracksList(data: Array<string>): Promise<ITrackItem[]> {
-	let formattedList: Array<ITrackItem> = [];
-	await Promise.all(
-		data.map(async (item, index) => {
-			await getDuration(item).then((duration: number) => {
-				formattedList.push({ src: item, currentIndex: index, time: audioPlayerController.durationVideo(duration) });
-			});
-		}),
-	);
-	return formattedList;
-}
-async function getDuration(src: any) {
-	return await new Promise(function (resolve) {
-		let audio = new Audio(src);
-		audio.addEventListener("loadedmetadata", function () {
-			resolve(audio.duration);
-		});
-	});
-}
-function dynamicSort(property: any) {
-	let sortOrder = 1;
-	if (property[0] === "-") {
-		sortOrder = -1;
-		property = property.substr(1);
-	}
-	return function (a: any, b: any) {
-		let result = a[property] < b[property] ? -1 : a[property] > b[property] ? 1 : 0;
-		return result * sortOrder;
-	};
-}
 const renderAvailableContent = (arrayCurrentPlaylist: Array<ITrackItem>, playlistManager: PlaylistManager, outResult: HTMLElement) => {
 	outResult.innerHTML = "";
 
@@ -153,13 +123,14 @@ const renderAvailableContent = (arrayCurrentPlaylist: Array<ITrackItem>, playlis
 			}
 
 			console.log(_itemCurrentIndex);
-			showCurrentPlayingVideo();
+			showCurrentPlayingVideo(document.querySelectorAll(".content_item"));
 		});
 	});
 };
 
-export const showCurrentPlayingVideo = () => {
-	let contentItems = document.querySelectorAll(".content_item");
+
+export const showCurrentPlayingVideo = (HTMLList:any) => {
+	let contentItems = HTMLList;
 
 	//console.log(contentItems)
 	contentItems.forEach((item: HTMLElement) => {
@@ -198,14 +169,14 @@ document.querySelector(".next-playlist-page").addEventListener("click", () => {
 	let data = audioPlayerController.getCurrentListTracks;
 	paginationData.NextPage(data);
 	renderAvailableContent(paginationData.renderPagination(data), playlistManager, document.querySelector<HTMLElement>(".content_current_playlist_render"));
-	showCurrentPlayingVideo();
+	showCurrentPlayingVideo(document.querySelectorAll(".content_item"));
 });
 
 document.querySelector(".prev-playlist-page").addEventListener("click", () => {
 	let data = audioPlayerController.getCurrentListTracks;
 	paginationData.PreviousPage();
 	renderAvailableContent(paginationData.renderPagination(data), playlistManager, document.querySelector<HTMLElement>(".content_current_playlist_render"));
-	showCurrentPlayingVideo();
+	showCurrentPlayingVideo(document.querySelectorAll(".content_item"));
 });
 
 const fileManagerController = (playlistManager: PlaylistManager) => {

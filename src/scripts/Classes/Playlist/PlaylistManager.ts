@@ -53,7 +53,7 @@ export default class PlaylistManager {
 
 	}
 	public removeTrackFromSaved(src:string){
-		this.getSavedPlaylist.getData.tracks.splice(this.getSavedPlaylist.getData.tracks.indexOf(src, 1));
+		this.getSavedPlaylist.getData.tracks.splice(this.getSavedPlaylist.getData.tracks.indexOf(src),1);
 		console.log(this.getSavedPlaylist.getData.tracks)
 		FileSystem.createJSONData(this.getSavedPlaylist, FileSystem.PATHS.saved);
 	}
@@ -64,6 +64,17 @@ export default class PlaylistManager {
 	}
 	public getPlaylistbyId(id: string): Playlist {
 		return this.getCustomPlaylists.filter((item) => item.getData.id === id)[0];
+	}
+	public dynamicSort(property: any) {
+		let sortOrder = 1;
+		if (property[0] === "-") {
+			sortOrder = -1;
+			property = property.substr(1);
+		}
+		return function (a: any, b: any) {
+			let result = a[property] < b[property] ? -1 : a[property] > b[property] ? 1 : 0;
+			return result * sortOrder;
+		};
 	}
 	get getCustomPlaylists() {
 		return this.data.customPlaylists;

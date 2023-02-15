@@ -142,6 +142,26 @@ export default class AudioPlayerController {
 		return !this._audio.paused;
 	}
 
+
+	async  formattedTracksList(data: Array<string>): Promise<ITrackItem[]> {
+		let formattedList: Array<ITrackItem> = [];
+		await Promise.all(
+			data.map(async (item, index) => {
+				await this.getDuration(item).then((duration: number) => {
+					formattedList.push({ src: item, currentIndex: index, time: this.durationVideo(duration) });
+				});
+			}),
+		);
+		return formattedList;
+	}
+	async  getDuration(src: any) {
+		return await new Promise(function (resolve) {
+			let audio = new Audio(src);
+			audio.addEventListener("loadedmetadata", function () {
+				resolve(audio.duration);
+			});
+		});
+	}
 	set setShuffleMode(isShuffle: boolean) {
 		this.mods.isShuffle = isShuffle;
 		this.mods.isShuffle && this.shuffleMode();

@@ -6,9 +6,8 @@
 	left: -100%;
 	top: 0;
 	z-index: $zIndexSideSections;
-    transition: .2s all ease-in-out;
+	transition: 0.2s all ease-in-out;
 }
-
 
 .saved_section.active {
 	left: 0;
@@ -18,8 +17,88 @@
 	position: absolute;
 	right: 40px;
 	top: 40px;
-    z-index: 6;
+	z-index: 6;
 	&:hover {
 		cursor: pointer;
+	}
+}
+
+.content_item_saved {
+	color: #fff;
+	display: grid;
+	grid-template-columns: repeat(4, 1fr);
+	justify-content: center;
+	align-items: center;
+	padding: 20px 15px;
+	&:hover {
+		cursor: pointer;
+		color: $mainRedColor;
+		background-color: #fff;
+	}
+}
+.content_item_saved.playing-track {
+	color: $mainRedColor;
+	background-color: #fff;
+}
+.render_saved_tracks {
+	max-height: 65vh;
+	overflow-y: scroll;
+	.play_current_content_saved {
+		display: grid;
+		justify-content: center;
+	}
+	.ext_content_item_saved {
+		display: grid;
+		justify-content: center;
+	}
+	.saved_manipulation{
+		display: grid;
+		justify-content: center;
+	}
+}
+.render_saved_tracks::-webkit-scrollbar {
+	width: 20px;
+}
+.render_saved_tracks::-webkit-scrollbar-thumb {
+	background-color: #fff;
+	border-radius: 20px;
+	border: 4px solid rgba(0, 0, 0, 0);
+	background-clip: content-box;
+	min-width: 32px;
+	min-height: 32px;
+	max-height: 50px;
+}
+
+.data_name_content_item_saved {
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	overflow: hidden;
+}
+
+
+.hd_saved_tracks {
+	color: $mainControllersColor;
+	margin: 80px 20px 20px 20px;
+	text-align: center;
+	font-size: 30px;
+}
+
+.data_about_saved_tracks {
+	text-align: center;
+	color: $mainControllersColor;
+}
+
+.pagination_saved_tracks {
+	margin-top: 20px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	color: #fff;
+	div {
+		margin-right: 20px;
+		&:hover {
+			cursor: pointer;
+			color: $mainRedColor;
+		}
 	}
 }
