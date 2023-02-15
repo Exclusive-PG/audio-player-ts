@@ -4,7 +4,8 @@ import AudioPlayerController from "../Classes/AudioControllers/AudioPlayerContro
 import { updateVolumeLine } from "./MainControllerAudio";
 import { setDataForTrack } from "./dataTrackController";
 import { showCurrentPlayingAudio } from "./fileManagerController";
-import { playlistManager } from './../Classes/Playlist/PlaylistManager';
+import { playlistManager } from "./../../renderer";
+
 
 const controllers = new Controllers();
 

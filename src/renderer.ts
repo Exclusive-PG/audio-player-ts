@@ -15,6 +15,7 @@ import fileManagerController, { showCurrentPlayingAudio } from "./scripts/UIcont
 import equaliazerController from './scripts/UIcontrollers/EqualizerController';
 import SavedTracksController from "./scripts/UIcontrollers/savedTracksController";
 import dataTrackController from "./scripts/UIcontrollers/dataTrackController";
+import { addPlaylistUIController } from "./scripts/UIcontrollers/AddPlaylistController";
 
 
 export let canvas: HTMLCanvasElement, ctx: CanvasRenderingContext2D, audio: HTMLAudioElement;
@@ -46,6 +47,7 @@ window.addEventListener("load", () => {
 	equaliazerController(audioContextController,audioPlayerController);
 	SavedTracksController();
 	dataTrackController(audioPlayerController);
+	addPlaylistUIController(playlistManager);
 });
 
 window.addEventListener("keyup", (e) => {

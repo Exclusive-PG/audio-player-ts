@@ -7,7 +7,7 @@ export default class AudioPlayerController {
 	private _modePlay: Function = null;
 	private _audio: HTMLAudioElement = null;
 	private currentListTracks: Array<ITrackItem> = [];
-	private currentPlaylistID: string | number;
+	private currentPlaylistID: string;
 	private MAX_VALUE_VOLUME = 1;
 	private MIN_VALUE_VOLUME = 0;
 	private playbackRateModes: Array<IplaybackRate> = [];

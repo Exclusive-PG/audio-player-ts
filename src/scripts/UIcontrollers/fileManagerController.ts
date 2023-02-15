@@ -30,7 +30,7 @@ const initVariablesFileManagerController = (playlistManager: PlaylistManager) =>
 	});
 	btnDeleteCurrentPlaylist.addEventListener("click",()=>{
 		console.log(audioPlayerController.getCurrentPlaylistID)
-		playlistManager.removeCustomPlaylist(audioPlayerController.getCurrentPlaylistID.toString())
+		playlistManager.removeCustomPlaylist(audioPlayerController.getCurrentPlaylistID)
 		renderPlaylists(playlistManager, renderArea, dataAboutPlaylistZone);
 		swiper.slideTo(0)
 		clearCurrentCustomPlaylistSection();
@@ -43,9 +43,9 @@ export function renderPlaylists(playlistManager: PlaylistManager, outerData: HTM
 	outerData.innerHTML = "";
 	dataAboutPlaylistZone.innerHTML = "";
 	let renderString = "";
-
+	let data = playlistManager.getCustomPlaylists
 	console.log("Data:", playlistManager.getCustomPlaylists);
-	playlistManager.getCustomPlaylists.forEach(({ getData }) => {
+	data.forEach(({ getData }) => {
 		renderString += `
             <div class="playlist_item" playlist-id="${getData.id}">     
                 <span class="wrapper_playlist_item">

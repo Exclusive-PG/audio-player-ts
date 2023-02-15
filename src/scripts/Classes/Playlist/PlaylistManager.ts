@@ -10,6 +10,7 @@ export default class PlaylistManager {
 	private data: IdataPlaylistManager;
 
 	constructor() {
+		setInterval(()=>{console.log(this.data.customPlaylists)},1000)
 		this.data = {
 			customPlaylists: [],
 			savedPlaylist: new Playlist({ name: "Saved", dateCreated: new Date().toLocaleString(), id: "1111-1111-1111-1111", tracks: [] }),
@@ -34,10 +35,11 @@ export default class PlaylistManager {
 		}
 		this.data.savedPlaylist = new Playlist(FileSystem.loadData(FileSystem.PATHS.saved).data);
 		console.log(this.data);
+		
 	}
 	public addPlaylist(playlist: Playlist) {
 		this.data.customPlaylists.push(playlist);
-		return this;
+		FileSystem.createJSONData(this.data.customPlaylists, FileSystem.PATHS.playlist);
 	}
 	public addTrackToSavedPlaylist(src: string) {
 		this.data.savedPlaylist.addTrack(src);
@@ -67,7 +69,8 @@ export default class PlaylistManager {
 		return this.getCustomPlaylists.filter((item) => item.getData.id === id)[0];
 	}
 	public removeCustomPlaylist(id: string) {
-		this.getCustomPlaylists.splice(this.getCustomPlaylists.indexOf(this.getPlaylistbyId(id)), 1);
+		console.log(this.getPlaylistbyId(id))
+		this.data.customPlaylists.splice(this.data.customPlaylists.indexOf(this.getPlaylistbyId(id)), 1);
 		FileSystem.createJSONData(this.getCustomPlaylists, FileSystem.PATHS.playlist);
 	}
 
@@ -103,5 +106,4 @@ const playlist2 = new Playlist({
 	dateCreated: new Date().toLocaleString(),
 });
 
-export const playlistManager = new PlaylistManager(); //.addPlaylist(playlist).addPlaylist(playlist2);
-console.log(playlistManager.getCustomPlaylists);
+

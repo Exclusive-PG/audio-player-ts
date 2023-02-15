@@ -1,9 +1,9 @@
 import { ipcRenderer } from "electron";
 import Playlist from "../Classes/Playlist/Playlist";
 import { uuidv4 } from "../requiredLib/requiredLib";
-import PlaylistManager, { playlistManager } from "../Classes/Playlist/PlaylistManager";
+import PlaylistManager from "../Classes/Playlist/PlaylistManager";
 import { renderPlaylists } from "./fileManagerController";
-import { ITrackItem } from "./../../types/types";
+
 
 export const addPlaylistUIController = (playlistManager: PlaylistManager) => {
 	const btnAddPlaylist = document.querySelector<HTMLElement>(".add_playlist_btn");
@@ -37,9 +37,9 @@ export const addPlaylistUIController = (playlistManager: PlaylistManager) => {
 		if (namePlaylist === "" || tracks.length === 0) return;
 
 		
-		let playlist = new Playlist({ dateCreated: new Date().toLocaleString(), id: uuidv4(), name: namePlaylist,tracks:[...new Set(tracks)] });
+		let playlist = new Playlist({ dateCreated: new Date().toLocaleString(), id: uuidv4(), name: namePlaylist,tracks });
 		playlistManager.addPlaylist(playlist);
-		playlistManager.saveData();
+		//playlistManager.saveData();
 		console.log(playlistManager.getCustomPlaylists);
 		renderPlaylists(playlistManager,renderArea,dataAboutPlaylistZone);
 	});
@@ -54,4 +54,4 @@ export const addPlaylistUIController = (playlistManager: PlaylistManager) => {
 // }
 
 
-addPlaylistUIController(playlistManager);
+
