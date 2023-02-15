@@ -6,6 +6,7 @@ import { ITrackItem } from "./../../types/types";
 import { audioPlayerController } from "./../../renderer";
 import PaginationData from "../Classes/Pagination/Pagination";
 import { playlistManager } from "./../../renderer";
+import { setDataForTrack } from "./dataTrackController";
 
 const paginationData = new PaginationData(10);
 paginationData.setOutputPageStatus(document.querySelector(".current_and_total_pages_playlist"), true);
@@ -16,6 +17,7 @@ const initVariablesFileManagerController = (playlistManager: PlaylistManager) =>
 	const btnOpenFileManager = document.querySelector<HTMLElement>(".show_file_manager");
 	const btnCloseFileManager = document.querySelector<HTMLElement>(".close_win_file_manager");
 	const dataAboutPlaylistZone = document.querySelector<HTMLElement>(".data_about_playlists");
+	const btnDeleteCurrentPlaylist = document.querySelector<HTMLElement>(".btn_delete_current_playlist")
 	btnOpenFileManager.addEventListener("click", () => {
 		fileManagerSection.classList.add("active");
 	});
@@ -24,8 +26,16 @@ const initVariablesFileManagerController = (playlistManager: PlaylistManager) =>
 	});
 	renderPlaylists(playlistManager, renderArea, dataAboutPlaylistZone);
 	audioPlayerController.audioElement.addEventListener("ended", () => {
-		showCurrentPlayingVideo(document.querySelectorAll(".content_item"));
+		showCurrentPlayingAudio(document.querySelectorAll(".content_item"));
 	});
+	btnDeleteCurrentPlaylist.addEventListener("click",()=>{
+		console.log(audioPlayerController.getCurrentPlaylistID)
+		playlistManager.removeCustomPlaylist(audioPlayerController.getCurrentPlaylistID.toString())
+		renderPlaylists(playlistManager, renderArea, dataAboutPlaylistZone);
+		swiper.slideTo(0)
+		clearCurrentCustomPlaylistSection();
+		
+	})
 };
 
 export function renderPlaylists(playlistManager: PlaylistManager, outerData: HTMLElement, dataAboutPlaylistZone: HTMLElement) {
@@ -67,6 +77,8 @@ export function renderPlaylists(playlistManager: PlaylistManager, outerData: HTM
 					audioPlayerController.setCurrentIndexTrack = -1;
 					audioPlayerController.setCurrentPlaylistID = currentPlaylist.getData.id.toString();
 					renderAvailableContent(paginationData.renderPagination(sortedData), playlistManager, document.querySelector<HTMLElement>(".content_current_playlist_render"));
+					document.querySelector(".pagination_current_playlist").classList.add("active")
+					document.querySelector<HTMLElement>(".btn_delete_current_playlist").classList.add("active")
 					playlistPlayingName.children[0].textContent = currentPlaylist.getData.name;
 					console.log("render new", audioPlayerController.getCurrentPlaylistID);
 				});
@@ -76,6 +88,8 @@ export function renderPlaylists(playlistManager: PlaylistManager, outerData: HTM
 
 	});
 }
+
+
 
 const renderAvailableContent = (arrayCurrentPlaylist: Array<ITrackItem>, playlistManager: PlaylistManager, outResult: HTMLElement) => {
 	outResult.innerHTML = "";
@@ -123,13 +137,20 @@ const renderAvailableContent = (arrayCurrentPlaylist: Array<ITrackItem>, playlis
 			}
 
 			console.log(_itemCurrentIndex);
-			showCurrentPlayingVideo(document.querySelectorAll(".content_item"));
+			showCurrentPlayingAudio(document.querySelectorAll(".content_item"));
+			setDataForTrack(audioPlayerController);
 		});
 	});
 };
 
+export function clearCurrentCustomPlaylistSection(){
 
-export const showCurrentPlayingVideo = (HTMLList:any) => {
+	document.querySelector<HTMLElement>(".content_current_playlist_render").innerHTML = `<center style="color: #fff; padding-top: 150px; font-size: 30px">Choose any playlist</center>`
+	document.querySelector(".pagination_current_playlist").classList.remove("active")
+	document.querySelector<HTMLElement>(".playing-playlist-name").children[0].textContent = "";
+	document.querySelector<HTMLElement>(".btn_delete_current_playlist").classList.remove("active")
+}
+export const showCurrentPlayingAudio = (HTMLList:any) => {
 	let contentItems = HTMLList;
 
 	//console.log(contentItems)
@@ -169,14 +190,14 @@ document.querySelector(".next-playlist-page").addEventListener("click", () => {
 	let data = audioPlayerController.getCurrentListTracks;
 	paginationData.NextPage(data);
 	renderAvailableContent(paginationData.renderPagination(data), playlistManager, document.querySelector<HTMLElement>(".content_current_playlist_render"));
-	showCurrentPlayingVideo(document.querySelectorAll(".content_item"));
+	showCurrentPlayingAudio(document.querySelectorAll(".content_item"));
 });
 
 document.querySelector(".prev-playlist-page").addEventListener("click", () => {
 	let data = audioPlayerController.getCurrentListTracks;
 	paginationData.PreviousPage();
 	renderAvailableContent(paginationData.renderPagination(data), playlistManager, document.querySelector<HTMLElement>(".content_current_playlist_render"));
-	showCurrentPlayingVideo(document.querySelectorAll(".content_item"));
+	showCurrentPlayingAudio(document.querySelectorAll(".content_item"));
 });
 
 const fileManagerController = (playlistManager: PlaylistManager) => {

@@ -43,6 +43,7 @@ export const ControllerAudio = (audio: HTMLAudioElement) => {
 			volumeLineContainer.style.setProperty("--progress-position", percent.toString());
 
 			audioPlayerController.setVolume = percent;
+			updateVolumeLine(audioPlayerController.volume, volumeLineContainer);
 		}
 	}
 	function scrubbingVolume(e: MouseEvent) {
@@ -59,6 +60,7 @@ export const ControllerAudio = (audio: HTMLAudioElement) => {
 		}
 		if (isScrubbingVolumeLine) {
 			scrubbingVolume(e);
+
 		}
 	});
 

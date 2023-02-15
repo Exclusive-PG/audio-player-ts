@@ -165,7 +165,7 @@
 
 .pagination_current_playlist {
 	margin-top: 20px;
-	display: flex;
+	display: none;
 	justify-content: center;
 	align-items: center;
 	color: #fff;
@@ -176,6 +176,9 @@
 			color: $mainRedColor;
 		}
 	}
+}
+.pagination_current_playlist.active{
+	display: flex;
 }
 .playing-playlist-name {
 	padding: 20px;
@@ -198,4 +201,21 @@
 			cursor: pointer;
 		}
 	}
+}
+
+.btn_delete_current_playlist{
+	position: fixed;
+	display: none;
+	top: 0px;
+	right: 40px;
+	color: $mainRedColor;
+	transition: .2s all ease-in-out;
+
+		&:hover{
+			cursor: pointer;
+			transform: scale(1.1);
+		}
+}
+.btn_delete_current_playlist.active{
+	display: block;
 }

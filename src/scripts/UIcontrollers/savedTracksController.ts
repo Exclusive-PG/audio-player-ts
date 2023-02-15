@@ -1,11 +1,9 @@
-
 import PaginationData from "../Classes/Pagination/Pagination";
 import PlaylistManager from "../Classes/Playlist/PlaylistManager";
 import { ITrackItem } from "./../../types/types";
 import AudioPlayerController from "./../Classes/AudioControllers/AudioPlayerController";
-import { playlistManager,audioPlayerController } from './../../renderer';
-import { showCurrentPlayingVideo } from "./fileManagerController";
-
+import { playlistManager, audioPlayerController } from "./../../renderer";
+import { clearCurrentCustomPlaylistSection, showCurrentPlayingAudio } from "./fileManagerController";
 
 const paginationData = new PaginationData(10);
 
@@ -15,31 +13,35 @@ function initSavedTracksDependencies(audioPlayerController: AudioPlayerControlle
 	const savedSection = document.querySelector<HTMLElement>(".saved_section");
 	const btnCloseSection = document.querySelector<HTMLElement>(".close_win_save_tracks");
 	const btnOpenSection = document.querySelector<HTMLElement>(".show_saved_tracks");
+	
 
 	btnOpenSection.addEventListener("click", () => {
 		savedSection.classList.add("active");
+		if (audioPlayerController.getCurrentPlaylistID !== playlistManager.getSavedPlaylist.getData.id) {
+			Load(audioPlayerController, playlistManager);
+			clearCurrentCustomPlaylistSection();
+		}
 	});
 	btnCloseSection.addEventListener("click", () => {
 		savedSection.classList.remove("active");
 	});
-    Load(audioPlayerController,playlistManager);
-    audioPlayerController.audioElement.addEventListener("ended", () => {
-		showCurrentPlayingVideo(document.querySelectorAll(".content_item_saved"));
+	Load(audioPlayerController, playlistManager);
+	audioPlayerController.audioElement.addEventListener("ended", () => {
+		showCurrentPlayingAudio(document.querySelectorAll(".content_item_saved"));
 	});
-}   
-
-function Load(audioPlayerController: AudioPlayerController, playlistManager: PlaylistManager){
-    audioPlayerController.formattedTracksList(playlistManager.getSavedPlaylist.getData.tracks).then((data) => {
-        let sortedData = data.sort(playlistManager.dynamicSort("currentIndex"));
-        paginationData.refreshDataPage();
-        audioPlayerController.setCurrentListTracks = sortedData;
-        audioPlayerController.setCurrentIndexTrack = -1;
-        audioPlayerController.setCurrentPlaylistID = playlistManager.getSavedPlaylist.getData.id.toString();
-        renderSavedTracks(paginationData.renderPagination(sortedData),playlistManager,audioPlayerController,document.querySelector(".render_saved_tracks"))	
-        showCurrentPlayingVideo(document.querySelectorAll(".content_item_saved"))	
-    });
 }
 
+function Load(audioPlayerController: AudioPlayerController, playlistManager: PlaylistManager) {
+	audioPlayerController.formattedTracksList(playlistManager.getSavedPlaylist.getData.tracks).then((data) => {
+		let sortedData = data.sort(playlistManager.dynamicSort("currentIndex"));
+		paginationData.refreshDataPage();
+		audioPlayerController.setCurrentListTracks = sortedData;
+		audioPlayerController.setCurrentIndexTrack = -1;
+		audioPlayerController.setCurrentPlaylistID = playlistManager.getSavedPlaylist.getData.id.toString();
+		renderSavedTracks(paginationData.renderPagination(sortedData), playlistManager, audioPlayerController, document.querySelector(".render_saved_tracks"));
+		showCurrentPlayingAudio(document.querySelectorAll(".content_item_saved"));
+	});
+}
 
 const renderSavedTracks = (arrayCurrentPlaylist: Array<ITrackItem>, playlistManager: PlaylistManager, audioPlayerController: AudioPlayerController, outResult: HTMLElement) => {
 	outResult.innerHTML = "";
@@ -60,14 +62,14 @@ const renderSavedTracks = (arrayCurrentPlaylist: Array<ITrackItem>, playlistMana
 	} catch {
 		console.log("not full page");
 	}
-	const playBtns = document.querySelectorAll(".content_item_saved");	playBtns.forEach((item: HTMLElement) => {
+	const playBtns = document.querySelectorAll(".content_item_saved");
+	playBtns.forEach((item: HTMLElement) => {
 		item.addEventListener("click", (e: any) => {
-
 			if (e.target.parentElement.classList.contains("remove_saved_track")) {
 				let srcElement = e.target.parentElement.getAttribute("full-path");
-				playlistManager.removeTrackFromSaved(srcElement)
-                Load(audioPlayerController,playlistManager);
-				console.log("remove",srcElement)
+				playlistManager.removeTrackFromSaved(srcElement);
+				Load(audioPlayerController, playlistManager);
+				console.log("remove", srcElement);
 				return;
 			}
 
@@ -81,7 +83,7 @@ const renderSavedTracks = (arrayCurrentPlaylist: Array<ITrackItem>, playlistMana
 			}
 
 			console.log(_itemCurrentIndex);
-			showCurrentPlayingVideo(document.querySelectorAll(".content_item_saved"));
+			showCurrentPlayingAudio(document.querySelectorAll(".content_item_saved"));
 		});
 	});
 };
@@ -90,17 +92,17 @@ const renderSavedTracks = (arrayCurrentPlaylist: Array<ITrackItem>, playlistMana
 document.querySelector(".next-saved-page").addEventListener("click", () => {
 	let data = audioPlayerController.getCurrentListTracks;
 	paginationData.NextPage(data);
-    renderSavedTracks(paginationData.renderPagination(data),playlistManager,audioPlayerController,document.querySelector(".render_saved_tracks"))	
-	showCurrentPlayingVideo(document.querySelectorAll(".content_item_saved"));
+	renderSavedTracks(paginationData.renderPagination(data), playlistManager, audioPlayerController, document.querySelector(".render_saved_tracks"));
+	showCurrentPlayingAudio(document.querySelectorAll(".content_item_saved"));
 });
 
 document.querySelector(".prev-saved-page").addEventListener("click", () => {
 	let data = audioPlayerController.getCurrentListTracks;
 	paginationData.PreviousPage();
-	renderSavedTracks(paginationData.renderPagination(data),playlistManager,audioPlayerController,document.querySelector(".render_saved_tracks"))	
-	showCurrentPlayingVideo(document.querySelectorAll(".content_item_saved"));
+	renderSavedTracks(paginationData.renderPagination(data), playlistManager, audioPlayerController, document.querySelector(".render_saved_tracks"));
+	showCurrentPlayingAudio(document.querySelectorAll(".content_item_saved"));
 });
 
 export default function SavedTracksController() {
-	initSavedTracksDependencies(audioPlayerController,playlistManager);
+	initSavedTracksDependencies(audioPlayerController, playlistManager);
 }

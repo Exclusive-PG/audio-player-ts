@@ -29,7 +29,7 @@ export default class AudioPlayerController {
 			isShuffle: false,
 			isRepeatOne: false,
 		};
-		this.playbackRateAudio(this.playbackRateModes[this._currentPlaybackRateMode]);
+		this.playbackRateAudioDefault(this.playbackRateModes[this._currentPlaybackRateMode]);
 		this.leadingZeroFormatter = new Intl.NumberFormat(undefined, {
 			minimumIntegerDigits: 2,
 		});
@@ -86,9 +86,12 @@ export default class AudioPlayerController {
 			this.nextTrack();
 		});
 	}
-	public playbackRateAudio(obj: IplaybackRate) {
+	public playbackRateAudioDefault(obj: IplaybackRate) {
 		console.log("Current playbackRate:", obj);
 		this._audio.defaultPlaybackRate = obj.value;
+	}
+	public playbackRateAudio(index: number){
+		this._audio.playbackRate = this.playbackRateModes[index].value;
 	}
 	public Mods() {
 		this.shuffleMode();
@@ -199,6 +202,9 @@ export default class AudioPlayerController {
 	}
 	get audioElement(){
 		return this._audio;
+	}
+	get getPlaybackRateMods(){
+		return this.playbackRateModes;
 	}
 	public getVolume() {
 		console.log(this._audio.volume);

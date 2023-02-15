@@ -41,14 +41,6 @@
 						<i class="fa-solid fa-bars"></i>
 					</div>
 					<ul class="nav-list">
-						<li>
-							<a href="#">
-								<i class="fa-solid fa-chart-simple"></i>
-								<span class="links_name">Dashboard</span>
-							</a>
-							<span class="tooltip">Dashboard</span>
-						</li>
-
 						<li data-screen="file_manager">
 							<a href="#" class="show_file_manager">
 								<i class="fa-solid fa-folder"></i>
@@ -113,6 +105,7 @@
 								<div class="name-zone"></div>
 								<div class="current-page-zone"></div>
 							</div>
+							<div class="btn_delete_current_playlist"><i class="fa-solid fa-trash fa-2x remove_saved_track"></i></div>
 							<div class="content_current_playlist_render"><center style="color: #fff; padding-top: 150px; font-size: 30px">Choose any playlist</center></div>
 
 							<div class="pagination_current_playlist">
@@ -126,22 +119,23 @@
 				</div>
 			</section>
 
-			<section class="equalizer_section ">
+			<section class="equalizer_section">
 				<div class="close_win_equalizer"><i class="fa-solid fa-xmark fa-2x" style="color: #fff"></i></div>
 				<div class="equalizer">
+					<button class="btn fourth reset_sliders_eq" ><i class="fa-solid fa-rotate-right"></i></button>
 					<div class="sliders_equalizer_wrapper">
 						<div class="section_slider">
 							<div class="title">HF</div>
 							<div class="sliders">
 								<div class="range-slider">
 									<span class="scope">22</span>
-									<input type="range" class="vertical slider_param" min="4700" max="22000" step="100" value="4700" data-filter="highShelf" data-param="frequency" />
+									<input type="range" class="vertical slider_param HS_F"  min="4700" max="22000" step="100" value="4700" data-filter="highShelf" data-param="frequency" />
 									<span class="scope scope-min">4.7</span>
 									<span class="param">kHz</span>
 								</div>
 								<div class="range-slider">
 									<span class="scope">50</span>
-									<input type="range" class="vertical slider_param" min="-50" max="50" value="50" data-filter="highShelf" data-param="gain" />
+									<input type="range" class="vertical slider_param HS_G" min="-50" max="50" value="50" data-filter="highShelf" data-param="gain" />
 									<span class="scope scope-min">-50</span>
 									<span class="param">dB</span>
 								</div>
@@ -152,13 +146,13 @@
 							<div class="sliders">
 								<div class="range-slider">
 									<span class="scope">220</span>
-									<input type="range" class="vertical slider_param" min="35" max="220" step="1" value="35" data-filter="lowShelf" data-param="frequency" />
+									<input type="range" class="vertical slider_param LS_F" min="35" max="220" step="1" value="35" data-filter="lowShelf" data-param="frequency"/>
 									<span class="scope scope-min">35</span>
 									<span class="param">Hz</span>
 								</div>
 								<div class="range-slider">
 									<span class="scope">50</span>
-									<input type="range" class="vertical slider_param" min="-50" max="50" value="50" data-filter="lowShelf" data-param="gain" />
+									<input type="range" class="vertical slider_param LS_G" min="-50" max="50" value="50" data-filter="lowShelf" data-param="gain" />
 									<span class="scope scope-min">-50</span>
 									<span class="param">dB</span>
 								</div>
@@ -169,13 +163,13 @@
 							<div class="sliders">
 								<div class="range-slider">
 									<span class="scope">5.9</span>
-									<input type="range" class="vertical slider_param" min="800" max="5900" step="100" value="800" data-filter="highPass" data-param="frequency" />
+									<input type="range" class="vertical slider_param HP_F" min="800" max="5900" step="100" value="800" data-filter="highPass" data-param="frequency" />
 									<span class="scope scope-min">0.8</span>
 									<span class="param">kHz</span>
 								</div>
 								<div class="range-slider">
 									<span class="scope">12</span>
-									<input type="range" class="vertical slider_param" min="0.7" max="12" step="0.1" value="0.7" data-filter="highPass" data-param="Q" />
+									<input type="range" class="vertical slider_param HP_Q" min="0.7" max="12" step="0.1" value="0.7" data-filter="highPass" data-param="Q" />
 									<span class="scope scope-min">0.7</span>
 									<span class="param">Q</span>
 								</div>
@@ -186,13 +180,13 @@
 							<div class="sliders">
 								<div class="range-slider">
 									<span class="scope">1600</span>
-									<input type="range" class="vertical slider_param" min="80" max="1600" step="10" value="880" data-filter="lowPass" data-param="frequency" />
+									<input type="range" class="vertical slider_param LP_F" min="80" max="1600" step="10" value="880" data-filter="lowPass" data-param="frequency" />
 									<span class="scope scope-min">80</span>
 									<span class="param">Hz</span>
 								</div>
 								<div class="range-slider">
 									<span class="scope">12</span>
-									<input type="range" class="vertical slider_param" min="0.7" max="12" step="0.1" value="0.7" data-filter="lowPass" data-param="Q" />
+									<input type="range" class="vertical slider_param LP_Q" min="0.7" max="12" step="0.1" value="0.7" data-filter="lowPass" data-param="Q" />
 									<span class="scope scope-min">0.7</span>
 									<span class="param">Q</span>
 								</div>
@@ -224,13 +218,19 @@
 					<div class="range_section">
 						<div class="range_item">
 							<div class="range_title">Gain <i class="fa-solid fa-volume-high"></i></div>
-							<input type="range" class="range_input_eq_mode gain_input_value" min="0" max="10" step="0.1"/>
+							<input type="range" class="range_input_eq_mode gain_input_value" min="0" max="10" step="0.1" />
 						</div>
 						<div class="range_item">
-							<div class="range_title">Stereo <i class="fa-solid fa-headphones "></i></div>
-							<input type="range" class="range_input_eq_mode panner_input_value" min="0" max="1" step="0.01"/>
+							<div class="range_title">Stereo <i class="fa-solid fa-headphones"></i></div>
+							<input type="range" class="range_input_eq_mode panner_input_value" min="0" max="1" step="0.01" />
 						</div>
-					
+					</div>
+					<div class="playback_rate_modes">
+						<div class="title_playback_modes">Playback Rate Modes</div>
+						<div class="wrapper_controller_playback_modes">
+							<div class="current_playback_rates_mod"></div>
+							<button class="btn fourth btn_for_change_playback_value">x1</button>
+						</div>
 					</div>
 				</div>
 			</section>
@@ -241,13 +241,22 @@
 					<div class="data_about_saved_tracks"></div>
 				</div>
 				<div class="save_tracks_wrapper">
-					
 					<div class="render_saved_tracks"></div>
 				</div>
 				<div class="pagination_saved_tracks">
 					<div class="prev-saved-page"><i class="fa-solid fa-angle-left fa-2x"></i></div>
 					<div class="current_and_total_pages_saved_tracks"></div>
 					<div class="next-saved-page"><i class="fa-solid fa-angle-right fa-2x"></i></div>
+				</div>
+			</section>
+			<section class="data_about_track">
+				<div class="wrapper_data_about_track">
+					<div class="poster_data_about_track"><img src="" alt="poster" class="img_data_about_track" /></div>
+					<div class="text_data_about_track">
+						<div class="artist_about_track">Artist</div>
+						<div class="title_about_track">Title</div>
+						<div class="time_about_track">00:00</div>
+					</div>
 				</div>
 			</section>
 		</main>

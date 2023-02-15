@@ -1,0 +1,58 @@
+.wrapper_data_about_track {
+	position: absolute;
+	left: 50%;
+	top: 50%;
+	transform: translate(-50%, -50%);
+	width: 50vw;
+	min-width: 500px;
+	height: 150px;
+	background-color: $blackBackgroundColor;
+}
+.wrapper_data_about_track {
+	display: flex;
+}
+
+.poster_data_about_track {
+	display: flex;
+	img {
+		width: 300px;
+		height: 150px;
+		object-fit: cover;
+	}
+}
+
+.text_data_about_track {
+	color: $mainControllersColor;
+	font-size: 18px;
+	padding: 15px 0 0 15px;
+
+	div {
+		text-overflow: ellipsis;
+		white-space: nowrap;
+		overflow: hidden;
+        width: 500px;
+	}
+}
+@media(max-width:1640px){
+    .text_data_about_track {
+ 
+        div {           
+            width: 300px;
+        }
+    }
+}
+@media(max-width:1250px){
+    // .text_data_about_track {
+ 
+    //     div {           
+    //         width: 100px;
+    //     }
+    // }
+    .poster_data_about_track {
+        img {
+            width: 150px;
+            height: 150px;
+
+        }
+    }
+}

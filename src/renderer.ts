@@ -11,9 +11,10 @@ import { keysControllersInit } from "./scripts/UIcontrollers/keyController";
 import "./scripts/Classes/Playlist/PlaylistManager";
 import PlaylistManager from "./scripts/Classes/Playlist/PlaylistManager";
 
-import fileManagerController, { showCurrentPlayingVideo } from "./scripts/UIcontrollers/fileManagerController";
+import fileManagerController, { showCurrentPlayingAudio } from "./scripts/UIcontrollers/fileManagerController";
 import equaliazerController from './scripts/UIcontrollers/EqualizerController';
 import SavedTracksController from "./scripts/UIcontrollers/savedTracksController";
+import dataTrackController from "./scripts/UIcontrollers/dataTrackController";
 
 
 export let canvas: HTMLCanvasElement, ctx: CanvasRenderingContext2D, audio: HTMLAudioElement;
@@ -22,31 +23,6 @@ export const playlistManager = new PlaylistManager();
 
 audio = new Audio();
 const audioContextController = new AudioContextController();
-
-let itemSongs2 = {
-	src: "C:Users/dayme/Downloads/Meduza_Becky_Hill_GOODBOYS_-_Lose_Control_66925984.mp3",
-};
-
-let itemSongs3 = {
-	src: "C:/Users/dayme/Downloads/Неизвестен_Атака_Титанов_5_Опенинг_holidaymp3_ru.mp3",
-};
-let item4 = {
-	src: "https://mdn.github.io/webaudio-examples/stereo-panner-node/viper.mp3",
-};
-let item5 = {
-	src: "C:/Users/dayme/Downloads/papa_roach-skeletons.mp3",
-};
-let item6 = {
-	src: "D:/Music/C.C.Catch - Best Of The Best (Remix Version) (2011)/01. Are You Man Enough (Long Version Muscle Mix).mp3",
-};
-let item7 = {
-	src: "C:/Users/dayme/Downloads/Omen.wav - Ungewiss_(audiohunter.ru).mp3",
-};
-let songs: any = [];
-
-songs.push(itemSongs2, itemSongs3, item4, item5, item6, item7);
-
-
 
 
 window.addEventListener("resize", () => {
@@ -60,23 +36,22 @@ window.addEventListener("load", () => {
 	canvas.height = window.innerHeight;
 	ctx = canvas.getContext("2d");
 
-	audioPlayerController.init(drawModeWaves, audio, songs);
+	audioPlayerController.init(drawModeWaves, audio, []);
 	audioContextController.init(audio);
 	audioContextController.connectNodes();
 	audioPlayerController.TrackingEnd();
 	ControllerAudio(audio);
 	keysControllersInit(audioPlayerController);
 	fileManagerController(playlistManager);
-	equaliazerController(audioContextController);
+	equaliazerController(audioContextController,audioPlayerController);
 	SavedTracksController();
+	dataTrackController(audioPlayerController);
 });
 
 window.addEventListener("keyup", (e) => {
 	console.log(e.key);
 });
-// document.querySelector(".panning-control").addEventListener("input",()=>{
-// 	audioContextController.setStereoNode = parseInt((document.querySelector(".panning-control") as HTMLInputElement).value)
-// })
+
 
 function drawModeWaves() {
 	//console.log(`width:${canvas.width}, height: ${canvas.height}`);

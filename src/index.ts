@@ -9,7 +9,7 @@ declare const MAIN_WINDOW_WEBPACK_ENTRY: string;
 if (require('electron-squirrel-startup')) { // eslint-disable-line global-require
   app.quit();
 }
-let mainWindow;
+let mainWindow:BrowserWindow;
 const createWindow = (): void => {
   // Create the browser window.
   mainWindow = new BrowserWindow({
@@ -66,8 +66,13 @@ ipcMain.on("upload_files", (event) => {
       console.log("no file selected");
     }
   })
-	
 });
+
+ipcMain.on("set_progress_song",(event,arg)=>{
+ mainWindow.setProgressBar(arg[0],{mode:arg[1]?"normal":"paused"})
+  event.sender.send("set_progress_song", arg);
+})
+
 
 // ipcMain.on("upload_img_food", (event) => {
 //   dialog.showOpenDialog({properties: ['openFile'],filters: [

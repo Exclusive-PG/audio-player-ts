@@ -4,7 +4,7 @@ import Playlist from "./Playlist";
 
 export interface IdataPlaylistManager {
 	customPlaylists: Array<Playlist>;
-	savedPlaylist: Playlist ;
+	savedPlaylist: Playlist;
 }
 export default class PlaylistManager {
 	private data: IdataPlaylistManager;
@@ -12,35 +12,37 @@ export default class PlaylistManager {
 	constructor() {
 		this.data = {
 			customPlaylists: [],
-			savedPlaylist: new Playlist({name:"Saved",dateCreated:new Date().toLocaleString(),id:"1111-1111-1111-1111",tracks:[]}),
+			savedPlaylist: new Playlist({ name: "Saved", dateCreated: new Date().toLocaleString(), id: "1111-1111-1111-1111", tracks: [] }),
 		};
 		if (!fs.existsSync(FileSystem.PATHS.playlist)) return;
 
 		FileSystem.loadData(FileSystem.PATHS.playlist).forEach((item: any) => {
-			console.log(item)
-			this.addPlaylist(new Playlist({
-				dateCreated:item.data.dateCreated,
-				id:item.data.id,
-				name:item.data.name,
-				//@ts-ignore
-				tracks:[...new Set(item.data.tracks)]
-			}));
+			console.log(item);
+			this.addPlaylist(
+				new Playlist({
+					dateCreated: item.data.dateCreated,
+					id: item.data.id,
+					name: item.data.name,
+					//@ts-ignore
+					tracks: [...new Set(item.data.tracks)],
+				}),
+			);
 		});
 		if (!fs.existsSync(FileSystem.PATHS.saved)) {
 			FileSystem.createJSONData(this.getSavedPlaylist, FileSystem.PATHS.saved);
-			return
-		};
-		 this.data.savedPlaylist = new Playlist(FileSystem.loadData(FileSystem.PATHS.saved).data);
-		 console.log(this.data)
+			return;
+		}
+		this.data.savedPlaylist = new Playlist(FileSystem.loadData(FileSystem.PATHS.saved).data);
+		console.log(this.data);
 	}
 	public addPlaylist(playlist: Playlist) {
 		this.data.customPlaylists.push(playlist);
 		return this;
 	}
-	public addTrackToSavedPlaylist(src:string){
-		this.data.savedPlaylist.addTrack(src)
+	public addTrackToSavedPlaylist(src: string) {
+		this.data.savedPlaylist.addTrack(src);
 		FileSystem.createJSONData(this.getSavedPlaylist, FileSystem.PATHS.saved);
-		console.log(this.data)
+		console.log(this.data);
 	}
 	public getAllCountTracks() {
 		let totalTracks = this.data.customPlaylists.reduce((acc, item) => {
@@ -48,13 +50,12 @@ export default class PlaylistManager {
 		}, 0);
 		return totalTracks;
 	}
-	public isSaved(src:string) :boolean {
-		return this.getSavedPlaylist.getData.tracks.includes(src)
-
+	public isSaved(src: string): boolean {
+		return this.getSavedPlaylist.getData.tracks.includes(src);
 	}
-	public removeTrackFromSaved(src:string){
-		this.getSavedPlaylist.getData.tracks.splice(this.getSavedPlaylist.getData.tracks.indexOf(src),1);
-		console.log(this.getSavedPlaylist.getData.tracks)
+	public removeTrackFromSaved(src: string) {
+		this.getSavedPlaylist.getData.tracks.splice(this.getSavedPlaylist.getData.tracks.indexOf(src), 1);
+		console.log(this.getSavedPlaylist.getData.tracks);
 		FileSystem.createJSONData(this.getSavedPlaylist, FileSystem.PATHS.saved);
 	}
 	public saveData() {
@@ -65,6 +66,11 @@ export default class PlaylistManager {
 	public getPlaylistbyId(id: string): Playlist {
 		return this.getCustomPlaylists.filter((item) => item.getData.id === id)[0];
 	}
+	public removeCustomPlaylist(id: string) {
+		this.getCustomPlaylists.splice(this.getCustomPlaylists.indexOf(this.getPlaylistbyId(id)), 1);
+		FileSystem.createJSONData(this.getCustomPlaylists, FileSystem.PATHS.playlist);
+	}
+
 	public dynamicSort(property: any) {
 		let sortOrder = 1;
 		if (property[0] === "-") {

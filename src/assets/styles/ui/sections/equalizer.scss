@@ -28,6 +28,7 @@
 .equalizer {
 	overflow-y: scroll;
 	max-height: 90vh;
+	position: relative;
 }
 .equalizer::-webkit-scrollbar {
 	width: 20px;
@@ -286,4 +287,24 @@ input[type="checkbox"]:checked + .toggle .handle {
 	margin-top: 50px;
 	text-align: center;
 	width: 100%;
+}
+
+.playback_rate_modes{
+	color: $mainControllersColor;
+	font-size: 20px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	padding: 100px 0;
+	flex-direction: column;
+}
+.wrapper_controller_playback_modes{
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+.reset_sliders_eq{
+	position: absolute;
+    left: 50%;
+    transform: translate(-60%, 36px);
 }

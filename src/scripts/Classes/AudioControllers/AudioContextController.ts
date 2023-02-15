@@ -79,7 +79,7 @@ export default class AudioContextController {
 		this.filters.lowPass.frequency.value = 880;
 		this.filters.lowPass.Q.value = 0.7;
 
-		console.log(this.filters["highPass"]["Q"])
+
 	}
 	public setFilterValue(type: string,param:string, value: number){
 		//@ts-ignore
